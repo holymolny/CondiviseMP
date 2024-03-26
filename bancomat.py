@@ -28,15 +28,22 @@ class Bancomat:
         if not isinstance(initAdmin, Admin):
             raise TypeError("L'utente inserito non è admin del sistema")
         self.admin = initAdmin
+
         #initScoperto deve essere >0
-        if 
-        if (initScoperto < 0):
-            raise ValueError("Lo scoperto non può assumere valore negativo")
-        self.scoperto_massimo = initScoperto
+        if not isinstance(initScoperto, int):
+            raise TypeError("Lo scoperto deve essere un numero intero")
+        else: 
+            if (initScoperto < 0):
+                raise ValueError("Lo scoperto non può assumere valore negativo")
+            self.scoperto_massimo = initScoperto
+
         #initPrelievo deve essere >0
-        if (initPrelievo < 0):
-            raise ValueError("Il limite per il prelievo non può assumere valore negativo")
-        self.limite_prelievo = initPrelievo
+        if not isinstance(initPrelievo, int):
+            raise TypeError("Il limite massimo per il prelievo deve essere un numero intero")
+        else:
+            if (initPrelievo < 0):
+                raise ValueError("Il limite per il prelievo non può assumere valore negativo")
+            self.limite_prelievo = initPrelievo
 
 
     """
