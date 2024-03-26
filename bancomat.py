@@ -46,9 +46,9 @@ class Bancomat:
             self.limite_prelievo = initPrelievo
 
 
-    """
+    """"
     -METODO DI RAPPRESENTAZIONE STRINGA:
-        Restituisce una stringa che rappresenta l'oggetto Bancomat nel formato:
+       Restituisce una stringa che rappresenta l'oggetto Bancomat nel formato:
         "Bancomat: scoperto massimo, limite prelievo
         lista utenti uno per riga con saldo per i clienti"
         Esempio:
@@ -58,10 +58,42 @@ class Bancomat:
         Cliente: username3 000000 nome cognome 0
         "
         Se la lista utenti è vuota la seconda riga deve esssere "Nessun utente presente".
+    """
+    
+    def __str__(self):
+        result = f"Bancomat: {self.scoperto_massimo}, {self.limite_prelievo}\n"
+        if self.utenti:
+            for utente, (obj_utente, saldo) in self.utenti.items():
+                result += f"{obj_utente.__class__.__name__}: {utente} {saldo}\n"
+        else:
+            result += "Nessun utente presente\n"
+        return result
 
+    """"
     -METODO DI CONFRONTO DI UGUAGLIANZA:
         Confronta due Bancomat e restituisce true se scoperto_massimo e limite_prelievo sono uguali e se la lista utenti contiene gli stessi utenti.
-    
+    """
+
+    def __eq__(self, other):
+        if not isinstance(other, Bancomat):
+            return False
+        
+        if self.scoperto_massimo != other.scoperto_massimo or self.limite_prelievo != other.limite_prelievo:
+            return False
+        
+        if sorted(self.utenti.keys()) != sorted(other.utenti.keys()):
+            return False
+        
+        for username, (utente_self, saldo_self) in self.utenti.items():
+            if username not in other.utenti:
+                return False
+            utente_other, saldo_other = other.utenti[username]
+            if type(utente_self) != type(utente_other) or saldo_self != saldo_other:
+                return False
+        
+        return True   
+
+    """"
     -METODI GETTER classici per lo stato senza login (GETTER e SETTER con login sono specificati sotto))
     """
 
