@@ -14,14 +14,32 @@ class Bancomat:
         utenti: dizionario che ha come chiave username e come valore una coppia con il riferimento ad un utente e il suo saldo.
         scoperto_massimo: intero >= 0 che rappresenta il massimo scoperto che un cliente può avere sul proprio conto.
         limite_prelievo: intero >= 0 che rappresenta il massimo prelievo che un cliente può fare in una volta sola.
-
+    
     Gli utenti di tipo Admin devono avere sempre saldo 0
 
     -COSTRUTTORE da inserire come primo metodo della classe Bancomat:
         Prende come argomenti un Admin, un intero positivo rappresentante lo scoperto massimo e un intero positivo rappresentante il limite di prelievo.
         Controlla tipi e valori degli argomenti e solleva un'eccezione TypeError o ValueError se non sono corretti.
         Inizializza l'oggetto Bancomat inserendo l'admin nel dizionario utenti.
-    
+
+    """
+    def __init__(self, initAdmin, initScoperto, initPrelievo):
+        #initAdmin deve essere oggetto classe Admin
+        if not isinstance(initAdmin, Admin):
+            raise TypeError("L'utente inserito non è admin del sistema")
+        self.admin = initAdmin
+        #initScoperto deve essere >0
+        if 
+        if (initScoperto < 0):
+            raise ValueError("Lo scoperto non può assumere valore negativo")
+        self.scoperto_massimo = initScoperto
+        #initPrelievo deve essere >0
+        if (initPrelievo < 0):
+            raise ValueError("Il limite per il prelievo non può assumere valore negativo")
+        self.limite_prelievo = initPrelievo
+
+
+    """
     -METODO DI RAPPRESENTAZIONE STRINGA:
         Restituisce una stringa che rappresenta l'oggetto Bancomat nel formato:
         "Bancomat: scoperto massimo, limite prelievo
