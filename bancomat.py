@@ -44,7 +44,11 @@ class Bancomat:
             if (initPrelievo < 0):
                 raise ValueError("Il limite per il prelievo non può assumere valore negativo")
             self.limite_prelievo = initPrelievo
-
+        
+        #Viene creato il dizionario degli utenti
+        self.utenti = {'username': (self.admin,  0)}
+        
+        
 
     """"
     -METODO DI RAPPRESENTAZIONE STRINGA:
@@ -96,6 +100,19 @@ class Bancomat:
     """"
     -METODI GETTER classici per lo stato senza login (GETTER e SETTER con login sono specificati sotto))
     """
+
+    def get_admin(self):
+        return self.admin
+    
+    def get_limite_prelievo(self):
+        return self.limite_prelievo
+    
+    def get_scoperto_massimo(self):
+        return self.scoperto_massimo
+    
+    def get_utenti(self):
+        return self.utenti
+    
 
     def login(self, username, secret, isAdmin=False):
         """Controlla che un utente sia presente nel dizionario, che il secret (pin o password) sia corretto e se isAdmin è True che l'utente sia un Admin.
