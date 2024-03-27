@@ -46,7 +46,7 @@ class Bancomat:
             self.limite_prelievo = initPrelievo
         
         #Viene creato il dizionario degli utenti
-        self.utenti = {'username': (self.admin,  0)}
+        self.utenti = {self.admin.get_username(): (Utente(self.admin.get_username()),  0)}
         
         
 
@@ -65,8 +65,12 @@ class Bancomat:
     """
     
     #Funzione che stampa la stringa
-    #def __str__(self):
-
+    def __str__(self):
+        strBancomat =  "Bancomat: " + str(self.scoperto_massimo) + ", " + str(self.limite_prelievo)
+        for (utente, valore) in self.utenti.items():
+            strBancomat += '\n Utente: ' + str(utente) + ", " + str(valore)
+        return strBancomat
+    
     """"
     -METODO DI CONFRONTO DI UGUAGLIANZA:
         Confronta due Bancomat e restituisce true se scoperto_massimo e limite_prelievo sono uguali e se la lista utenti contiene gli stessi utenti.
@@ -115,7 +119,8 @@ class Bancomat:
         :param isAdmin: booleano che indica se l'operazione è per un Admin
         :return: True se il login è riuscito, False altrimenti
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #if username in self.utenti:
+
 
     def get_limite_prelievo(self, username, secret):
         """Restituisce il limite massimo di prelievo dopo aver effettuato il login.

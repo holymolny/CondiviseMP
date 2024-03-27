@@ -119,7 +119,7 @@ class Admin(Utente):
 
         #Controlli per la password (stringa composta da almeno una lettera e almeno un numero)
         #Controllo effettuato con regex
-        if not isinstance(initPassword, str) or not re.match(r'^(?=.[A-Za-z])(?=.\d).+$', initPassword):
+        if not isinstance(initPassword, str) and not re.match(r'^(?=.[A-Za-z])(?=.\d).+$', initPassword):
             raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
         self.password = initPassword
 
@@ -135,7 +135,7 @@ class Admin(Utente):
 
     #Metodo di stampa per l'oggetto Admin secondo le modalità indicate
     def __str__(self):
-        return "Admin: " + str(self.username) + " " + str(self.pin)
+        return "Admin: " + str(self.username) + " " + str(self.password)
     
     #Metodo di controllo dell'uguaglianza tra due istanze della stessa classe
     def __eq__(self, otherAdmin): 
