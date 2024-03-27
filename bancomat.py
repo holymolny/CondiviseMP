@@ -64,14 +64,8 @@ class Bancomat:
         Se la lista utenti è vuota la seconda riga deve esssere "Nessun utente presente".
     """
     
-    def __str__(self):
-        result = f"Bancomat: {self.scoperto_massimo}, {self.limite_prelievo}\n"
-        if self.utenti:
-            for utente, (obj_utente, saldo) in self.utenti.items():
-                result += f"{obj_utente.__class__.__name__}: {utente} {saldo}\n"
-        else:
-            result += "Nessun utente presente\n"
-        return result
+    #Funzione che stampa la stringa
+    #def __str__(self):
 
     """"
     -METODO DI CONFRONTO DI UGUAGLIANZA:
@@ -189,6 +183,9 @@ class Bancomat:
         :param somma: la somma iniziale dell'utente
         :return: True se l'utente è stato aggiunto, False altrimenti
         """
+        if (self.admin.get_username == username and self.admin.get_password == password):
+            newUtente = Utente(u_utente)
+
 
     def rimuovi_utente(self, username, password, u_utente):
         """Rimuove un utente dal sistema dopo aver effettuato il login.

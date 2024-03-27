@@ -1,0 +1,10 @@
+FUNZIONAMENTO DIZIONARIO
+- Uno unico per tutti? Sia clienti che admin?
+- Se uno unico, come si differenzia un admin da un cliente con saldo = 0?
+- Saldo dove è? Nella classe Cliente? O bancomat?
+- aggiungi_utente, come facciamo ad aggiungere un utente senza chiedere il pin in caso sia admin 
+  o la password nome e cognome in caso sia un utente? L'aggiunta viene fatta perchè si può creare l'oggetto Utente, 
+  ma senza queste informazioni non si può creare un nuovo Cliente o un nuovo Admin. Quindi se viene fatta l'aggiunta 
+  di questi utenti poi questi a loro volta non possono accedere nuovamente.
+- modifica nome utente si può aggiungere?
+- come funziona il metodo lista_clienti_con_saldo_almeno(self, username, password, somma=0), restituisce i clienti con saldo>somma?
