@@ -1,23 +1,31 @@
 from bancomat import *
 import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 
-# Funzione chiamata quando il pulsante viene premuto
-def button_click():
-    label.config(text="Hai premuto il pulsante!")
+def login():
+    print('ho cliccato sul bottone LogIn')
 
-# Creazione di una nuova finestra
-window = tk.Tk()
+#CREO FINESTRA
 
-# Aggiunta di un titolo alla finestra
-window.title("Esempio Tkinter")
+#finestra principale:
+root = Tk()
+root.title('Bancomat MOLPOL')
+#dimensione della finestra:
+root.geometry('800x600')
+root.resizable(False, False)
+#per farla comparire davanti alle altre schede
+root.lift()
 
-# Creazione di un'etichetta nella finestra
-label = tk.Label(window, text="Ciao, Tkinter!")
-label.pack()  # Posiziona l'etichetta nella finestra
+#testo centrale
+label = Label(text = 'MOLPOL BANKING SYSTEM', font = ('Calibri', 20))
+label.pack()
 
-# Creazione di un pulsante nella finestra
-button = tk.Button(window, text="Premimi!", command=button_click)
-button.pack()  # Posiziona il pulsante nella finestra
+#bottone login
+button = Button(text = "LogIn", command=login)
+button.pack()
+#bottone meme che chiude il programma
+button = Button(text = "Stacca Stacca", command = lambda: root.quit())
+button.pack()
 
-# Avvio del ciclo di eventi della finestra
-window.mainloop()
+root.mainloop()
