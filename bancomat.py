@@ -46,7 +46,7 @@ class Bancomat:
             self.limite_prelievo = initPrelievo
         
         #Viene creato il dizionario degli utenti
-        self.utenti = {self.admin.get_username(): (Utente(self.admin.get_username()),  0)}
+        self.utenti = {self.admin.get_username(): (self.admin,  0)}
         
         
 
@@ -119,7 +119,16 @@ class Bancomat:
         :param isAdmin: booleano che indica se l'operazione è per un Admin
         :return: True se il login è riuscito, False altrimenti
         """
-        #if username in self.utenti:
+        logIn = False
+        if username in self.utenti:
+            utente = self.utenti[username][0]
+            if isAdmin and isinstance(utente, Admin):
+                if utente.get_password() == secret:
+                    logIn = True
+            elif not isAdmin and isinstance(utente, Cliente):
+                if utente.get_pin() == secret:
+                    logIn = True
+        return logIn
 
 
     def get_limite_prelievo(self, username, secret):

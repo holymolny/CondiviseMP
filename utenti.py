@@ -47,10 +47,11 @@ class Cliente(Utente):
         super().__init__(initUser)
 
         #Controlli su pin (stringa di 6 cifre)
-        if not isinstance(initPin, str) or not initPin.isalpha(): 
+        #if not type(initPin) == "<class 'str'>" or initPin.isdigit():
+        if not isinstance(initPin, str): 
             raise TypeError("Il pin deve essere una stringa di numeri")
         else:
-            if not re.match(r'^\d{6}$', initPin):
+            if not re.match(r'^\d{6}$', initPin) or initPin.isalpha():
                 raise ValueError("Il pin deve essere composto da 6 cifre")
         self.pin = initPin
 
@@ -119,7 +120,9 @@ class Admin(Utente):
 
         #Controlli per la password (stringa composta da almeno una lettera e almeno un numero)
         #Controllo effettuato con regex
-        if not isinstance(initPassword, str) and not re.match(r'^(?=.[A-Za-z])(?=.\d).+$', initPassword):
+        if not isinstance(initPassword, str):
+            raise TypeError
+        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).+$', initPassword):
             raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
         self.password = initPassword
 
@@ -129,7 +132,9 @@ class Admin(Utente):
     
     def set_password(self, newPassword):
         #Controllo su password
-        if not isinstance(newPassword, str) or not re.match(r'^(?=.[A-Za-z])(?=.\d).+$', newPassword):
+        if not isinstance(newPassword, str):
+            raise TypeError
+        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).+$', newPassword):
             raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
         self.password = newPassword
 
