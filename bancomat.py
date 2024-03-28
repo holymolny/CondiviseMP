@@ -137,7 +137,15 @@ class Bancomat:
         :param secret: la password o il pin dell'utente
         :return: il limite massimo di prelievo, None se il login non è riuscito
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+
+        isLoggato = self.login(username, secret, isAdmin)
+        if isLoggato:
+            return self.limite_prelievo
+        return None
+
+
+
 
     def set_limite_prelievo(self, username, password, limite_prelievo):
         """Modifica il limite massimo di prelievo dopo aver effettuato il login.
