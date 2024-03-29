@@ -10,15 +10,6 @@ bancomat = Bancomat(mainAdmin, 500, 1000)
 
 #print(mainAdmin, secondAdmin, bancomat)
 
-#Test login admin
-print("Errore 1:")
-errori += testEqual(1, bancomat.login("admin1", "admin123",True), True)
-print("Errore 2:")
-errori += testEqual(2, bancomat.login("admin1", "admin2",True), False)
-print("Errore 3:")
-errori += testEqual(3, bancomat.login("admin1", "admin123",False), True)
-
-print(bancomat.login("admin1", "admin123",False))
 
 #Test creazione utenti
 cliente1 = Cliente("cl1", "123456", "Mario", "Rossi")
@@ -67,6 +58,7 @@ try:
     adminx = Admin("adminx", "adminx")
     errori += 1
     print(f"Test {9}: Failed")
+
 except ValueError:
     pass
 
@@ -86,6 +78,42 @@ try:
 except ValueError:
     pass
 
+
+#LOGIN DI ADMIN
+bancomat.login("admin1", "admin123", True)
+
+#AGGIUNTA ELEMENTI AL DIZIONARIO
+errori += testEqual(12, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1000), True)
+errori += testEqual(13, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1000), False)
+errori += testEqual(14, bancomat.aggiungi_utente("admin1", "admin123",cliente2), True)
+errori += testEqual(15, bancomat.aggiungi_utente("admin1", "admin123",cliente3,500), True)
+errori += testEqual(16, bancomat.aggiungi_utente("admin1", "admin123",cliente4,1500), True)
+errori += testEqual(17, bancomat.aggiungi_utente("admin1", "admin123",secondAdmin,1000), False)
+errori += testEqual(18, bancomat.aggiungi_utente("admin1", "admin123",secondAdmin,0), True)
+
+
+
+#PROVE LOGIN 
+
+#Test login admin
+errori += testEqual(19, bancomat.login("admin1", "admin123",True), True)
+errori += testEqual(20, bancomat.login("admin1", "admin2",True), False)
+
+#############################################Qui da errore######################################################
+errori += testEqual(21, bancomat.login("admin1", "admin123",False), True)
+#Secondo me stampa il valore corretto che è questo
+#print(bancomat.login("admin1", "admin123",False))
+
+
+#errori += testEqual(12, bancomat.get_limite_prelievo("cl1", "123456"), True)   #1000
+#errori += testEqual(13, bancomat.get_limite_prelievo("admin1", "admin123"), True)
+#errori += testEqual(14, bancomat.get_limite_prelievo("cl7", "123456"), None)  #Non esiste qundi ritorna None
+
+
+
+print(bancomat.get_limite_prelievo("cl1", "123456"))
+print(bancomat.get_limite_prelievo("admin1", "admin123"))
+print(bancomat.get_limite_prelievo("cl7", "123456"))
 
 #Stampa se ci sono errori
 # abbiamo finito ?

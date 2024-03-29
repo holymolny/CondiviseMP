@@ -1,13 +1,15 @@
 from utenti import *
-
 # Da completare con il codice
+
+USER = ""
+PSW = ""
 
 #CLASSE Bancomat
 class Bancomat:
     LOGIN_ERRATO = "Login errato"
     FONDI_INSUFFICIENTI = "Fondi insufficienti"
     LIMITE_PRELIEVO_SUPERATO = "Limite prelievo superato"
-    UTENTE_NON_VALIDO = "Utente non valido"
+    UTENTE_NON_VALIDO = "Utente non valido"    
 
     """
     -STATO:
@@ -119,16 +121,24 @@ class Bancomat:
         :param isAdmin: booleano che indica se l'operazione è per un Admin
         :return: True se il login è riuscito, False altrimenti
         """
+        global USER
+        global PSW
+        
         logIn = False
         if username in self.utenti:
             utente = self.utenti[username][0]
-            if isAdmin:
+            if isAdmin and isinstance(utente, Admin):
                 if utente.get_password() == secret:
                     logIn = True
-            else:
+                    USER = utente.get_username()
+                    PSW = utente.get_password()
+            elif not isAdmin and isinstance(utente, Cliente):
                 if utente.get_pin() == secret:
                     logIn = True
-        return logIn
+                    USER = utente.get_username()
+                    PSW = utente.get_pin()
+            
+            return logIn
 
 
     def get_limite_prelievo(self, username, secret):
@@ -137,12 +147,13 @@ class Bancomat:
         :param secret: la password o il pin dell'utente
         :return: il limite massimo di prelievo, None se il login non è riuscito
         """
-        #pass #istruzione che non fa niente --> da sostituire con il codice
 
-        isLoggato = self.login(username, secret, isAdmin)
-        if isLoggato:
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        print("Prelievo: " + USER + PSW)
+        if(USER == username and PSW == secret):
             return self.limite_prelievo
-        return None
+        
+       
 
 
 
@@ -155,7 +166,7 @@ class Bancomat:
         :return: True se il limite massimo di prelievo è stato modificato, False altrimenti
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        isLoggato = self.login(username, password, isAdmin)
+        isLoggato = self.login(username, password, self.isAdmin)
         if isLoggato:
             if not isinstance(limite_prelievo, int):
                 return False
@@ -203,17 +214,26 @@ class Bancomat:
         """
         pass #istruzione che non fa niente --> da sostituire con il codice
     
-    def aggiungi_utente(self, username, password, u_utente, somma=0):
+    def aggiungi_utente(self, username, password, utente, somma=0):
         """Aggiunge un utente non presente al sistema dopo aver effettuato il login.
         :param username: lo username dell'admin
         :param password: la password dell'admin
-        :param u_utente: l'username dell'utente da aggiungere
+        :param utente: oggetto di tipo utente da aggiungere
         :param somma: la somma iniziale dell'utente
         :return: True se l'utente è stato aggiunto, False altrimenti
         """
-        if (self.admin.get_username == username and self.admin.get_password == password):
-            newUtente = Utente(u_utente)
-
+        isAdded = False
+        if username == USER and password == PSW:
+            if not utente.get_username() in self.utenti:
+                if isinstance(utente, Admin):
+                    if somma == 0:
+                        self.utenti[utente.get_username()] = (utente, somma)
+                        isAdded = True
+                    #errore altrimenti
+                else:
+                    self.utenti[utente.get_username()] = (utente, somma)
+                    isAdded = True
+        return isAdded
 
     def rimuovi_utente(self, username, password, u_utente):
         """Rimuove un utente dal sistema dopo aver effettuato il login.
