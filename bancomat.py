@@ -154,7 +154,13 @@ class Bancomat:
         :param limite_prelievo: il nuovo limite massimo di prelievo
         :return: True se il limite massimo di prelievo è stato modificato, False altrimenti
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        isLoggato = self.login(username, password, isAdmin)
+        if isLoggato:
+            if not isinstance(limite_prelievo, int):
+                return False
+            else:
+                self.limite_prelievo = limite_prelievo
     
     def get_scoperto_massimo(self, username, secret):
         """Restituisce lo scoperto massimo ammesso nel bancomat dopo aver effettuato il login.

@@ -1,31 +1,86 @@
 from bancomat import *
+from utenti import *
 import tkinter as tk
-from tkinter import *
-from tkinter import ttk
+from tkinter import Tk
 
-def login():
-    print('ho cliccato sul bottone LogIn')
+class BancomatGUI:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Bancomat")
+        self.current_user = None
 
-#CREO FINESTRA
+        self.login_frame = tk.Frame(self.master)
+        self.login_frame.pack()
+        self.username_label = tk.Label(self.login_frame, text="Username:")
+        self.username_label.pack()
+        self.username_entry = tk.Entry(self.login_frame)
+        self.username_entry.pack()
+        self.password_label = tk.Label(self.login_frame, text="Password:")
+        self.password_label.pack()
+        self.password_entry = tk.Entry(self.login_frame, show="*")
+        self.password_entry.pack()
+        self.login_button = tk.Button(self.login_frame, text="Login", command=self.login)
+        self.login_button.pack()
 
-#finestra principale:
-root = Tk()
-root.title('Bancomat MOLPOL')
-#dimensione della finestra:
-root.geometry('800x600')
-root.resizable(False, False)
-#per farla comparire davanti alle altre schede
-root.lift()
+        self.operation_frame = tk.Frame(self.master)
+        self.error_label = tk.Label(self.master, fg="red")
 
-#testo centrale
-label = Label(text = 'MOLPOL BANKING SYSTEM', font = ('Calibri', 20))
-label.pack()
+    def login(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        try:
+            user = self.bancomat.login(username, password)
+            self.current_user = user
+            self.show_operations()
+        except BancomatError as e:
+            self.show_error(str(e))
 
-#bottone login
-button = Button(text = "LogIn", command=login)
-button.pack()
-#bottone meme che chiude il programma
-button = Button(text = "Stacca Stacca", command = lambda: root.quit())
-button.pack()
+    def show_operations(self):
+        self.login_frame.pack_forget()
+        self.error_label.pack_forget()
 
-root.mainloop()
+        if isinstance(self.current_user, Cliente):
+            self.show_client_operations()
+        elif isinstance(self.current_user, Admin):
+            self.show_admin_operations()
+        else:
+            self.show_error("Tipo di utente non riconosciuto.")
+
+    def show_client_operations(self):
+        self.operation_frame.pack()
+        self.withdraw_button = tk.Button(self.operation_frame, text="Prelievo", command=self.withdraw)
+        self.withdraw_button.pack()
+        self.deposit_button = tk.Button(self.operation_frame, text="Deposito", command=self.deposit)
+        self.deposit_button.pack()
+        self.transfer_button = tk.Button(self.operation_frame, text="Trasferimento", command=self.transfer)
+        self.transfer_button.pack()
+
+    def show_admin_operations(self):
+        self.operation_frame.pack()
+        self.manage_users_button = tk.Button(self.operation_frame, text="Gestione Utenti", command=self.manage_users)
+        self.manage_users_button.pack()
+
+    def withdraw(self):
+        # Implementa la logica per il prelievo
+        pass
+
+    def deposit(self):
+        # Implementa la logica per il deposito
+        pass
+
+    def transfer(self):
+        # Implementa la logica per il trasferimento
+        pass
+
+    def manage_users(self):
+        # Implementa la gestione degli utenti (solo per admin)
+        pass
+
+    def show_error(self, message):
+        self.error_label.config(text=message)
+        self.error_label.pack()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = BancomatGUI(root)
+    root.mainloop()
