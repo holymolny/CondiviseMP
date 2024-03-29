@@ -122,10 +122,10 @@ class Bancomat:
         logIn = False
         if username in self.utenti:
             utente = self.utenti[username][0]
-            if isAdmin and isinstance(utente, Admin):
+            if isAdmin:
                 if utente.get_password() == secret:
                     logIn = True
-            elif not isAdmin and isinstance(utente, Cliente):
+            else:
                 if utente.get_pin() == secret:
                     logIn = True
         return logIn
