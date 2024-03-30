@@ -1,9 +1,6 @@
 from utenti import *
 # Da completare con il codice
 
-USER = ""
-PSW = ""
-ADMIN = False
 
 #CLASSE Bancomat
 class Bancomat:
@@ -11,6 +8,10 @@ class Bancomat:
     FONDI_INSUFFICIENTI = "Fondi insufficienti"
     LIMITE_PRELIEVO_SUPERATO = "Limite prelievo superato"
     UTENTE_NON_VALIDO = "Utente non valido"    
+    
+    USER = ""
+    PSW = ""
+    ADMIN = False
 
     """
     -STATO:
@@ -292,9 +293,14 @@ class Bancomat:
         #pass #istruzione che non fa niente --> da sostituire con il codice
         if USER == username and PSW == secret:
             utente = self.utenti[username][0]
-            if isinstance(utente, Admin):
-                
-
+            if ADMIN:
+                utente.set_password(new_secret)
+                return True
+            elif not ADMIN:
+                utente.set_pin(new_secret)
+                return True
+        return False
+            
 
                 
     def preleva(self, username, pin, somma):
@@ -304,7 +310,19 @@ class Bancomat:
         :param somma: la somma da prelevare
         :return: coppia (True, "") se il prelievo è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if USER == username and PSW == pin and not ADMIN:
+            saldo_utente = self.utenti[username][1]
+            if somma > self.limite_prelievo:
+                return False, self.LIMITE_PRELIEVO_SUPERATO
+            if saldo_utente-somma > self.scoperto_massimo:
+                return False, self.FONDI_INSUFFICIENTI
+            
+            saldo_utente -= somma
+            self.utenti[username][1] = saldo_utente
+            return True, ""
+        return self.LOGIN_ERRATO
+                    
 
     def deposita(self, username, pin, somma):
         """Permette ad un cliente di depositare sul proprio conto dopo aver effettuato il login.
@@ -313,7 +331,16 @@ class Bancomat:
         :param somma: la somma da depositare
         :return: coppia (True, "") se il deposito è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+    
+        if USER == username and PSW == pin and not ADMIN:
+            if somma > 0 and isinstance(somma, int):
+                self.utenti[username][1] = self.utenti[username][1] + somma
+                return (True, "")
+            else:
+                return(False, "Inserire una somma valida")
+                
+                
 
     def trasferisci(self, username, pin, destinatario, somma):
         """Permette ad un cliente di trasferire ad un altro cliente dopo aver effettuato il login, andando in negativo di al massimo "scoperto_massimo".
@@ -324,7 +351,10 @@ class Bancomat:
         :return: coppia (True, "") se il trasferimento è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         pass #istruzione che non fa niente --> da sostituire con il codice
-      
+        """if USER == username and PSW == pin and not ADMIN:"""
+
+
+
     def lista_clienti_con_saldo_negativo(self, username, password):
         """Restituisce la lista dei clienti con saldo negativo dopo aver effettuato il login.
         :param username: lo username dell'admin
