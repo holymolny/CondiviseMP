@@ -149,7 +149,10 @@ errori += testEqual(28, bancomat.set_scoperto_massimo("cl1", "123456", 2000), Fa
 bancomat.login("admin1", "admin123", True)
 errori += testEqual(29, bancomat.set_scoperto_massimo("admin1", "admin123", 2000), True)
 
+#Test funzione get_saldo()
 
+#Test funzione get_lista_utenti()
+print(bancomat.get_lista_utenti("admin1", "admin123"))
 
 #Stampa se ci sono errori
 # abbiamo finito ?

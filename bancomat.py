@@ -200,7 +200,10 @@ class Bancomat:
         :param pin: il pin del cliente
         :return: il saldo del cliente, None se il login non è riuscito
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if (USER == username and PSW == pin and not ADMIN):
+            saldo = self.utenti[username][1]
+            return saldo
     
     def get_lista_utenti(self, username, password):
         """Restituisce la lista degli utenti ad un Admin dopo aver effettuato il login.
@@ -208,6 +211,9 @@ class Bancomat:
         :param password: la password dell'admin
         :return: lista degli utenti, None se il login non è riuscito
         """
+        if (USER == username and PSW == password and ADMIN):
+            for key in self.utenti.keys():
+                return self.utenti[key][0]
     
     def get_utente(self, username, password, u_utente):
         """Restituisce l'oggento Utente cercato ad un Admin dopo aver effettuato il login.
