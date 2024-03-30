@@ -350,8 +350,18 @@ class Bancomat:
         :param somma: la somma da trasferire
         :return: coppia (True, "") se il trasferimento è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
-        """if USER == username and PSW == pin and not ADMIN:"""
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        
+        if USER == username and PSW == pin and not ADMIN:
+            if isinstance(destinatario, Cliente):
+                if somma > 0 and isinstance(somma, int) and somma <= Bancomat.get_limite_prelievo() and (self.utenti[username][1] - somma > Bancomat.get_scoperto_massimo()):
+                    """non sono convinto se al posto di Bancomat. ecc ecc ci vada self.initPrelevo e self.initScoperto o è la stessa cosa"""
+                    self.utenti[username][1] = self.utenti[username][1] - somma
+                    self.utenti[destinatario][1] = self.utenti[destinatario][1] + somma
+                    return(True, "")
+                else:
+                    return (False, "Inserire un valore corretto")
+
 
 
 
