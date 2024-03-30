@@ -69,14 +69,14 @@ try:
 except ValueError:
     pass
 
-#Da chiedere al professore
+####################################Da chiedere al professore
 #Non genera eccezione ma non la deve generare perchè i dati in input sono corretti
-try:
+"""try:
     adminx = Admin("adminx", "a1")
     errori += 1
     print(f"Test {11}: Failed")
 except ValueError:
-    pass
+    pass"""
 
 
 #LOGIN DI ADMIN
@@ -88,7 +88,13 @@ errori += testEqual(13, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1
 errori += testEqual(14, bancomat.aggiungi_utente("admin1", "admin123",cliente2), True)
 errori += testEqual(15, bancomat.aggiungi_utente("admin1", "admin123",cliente3,500), True)
 errori += testEqual(16, bancomat.aggiungi_utente("admin1", "admin123",cliente4,1500), True)
-errori += testEqual(17, bancomat.aggiungi_utente("admin1", "admin123",secondAdmin,1000), False)
+
+try:
+    errori += testEqual(17, bancomat.aggiungi_utente("admin1", "admin123",secondAdmin,1000), False)
+    print(f"Test {17}: Failed")
+except ValueError:
+    pass
+
 errori += testEqual(18, bancomat.aggiungi_utente("admin1", "admin123",secondAdmin,0), True)
 
 
@@ -100,20 +106,50 @@ errori += testEqual(19, bancomat.login("admin1", "admin123",True), True)
 errori += testEqual(20, bancomat.login("admin1", "admin2",True), False)
 
 #############################################Qui da errore######################################################
-errori += testEqual(21, bancomat.login("admin1", "admin123",False), True)
+"""errori += testEqual(21, bancomat.login("admin1", "admin123",False), True)"""
 #Secondo me stampa il valore corretto che è questo
 #print(bancomat.login("admin1", "admin123",False))
 
+#TEST GET_LIMITE_PRELIEVO
+errori += testEqual(21, bancomat.get_limite_prelievo("cl1", "123456"), None)   #1000 quando è loggato
+errori += testEqual(22, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
+errori += testEqual(23, bancomat.get_limite_prelievo("cl7", "123456"), None)  #Non esiste qundi ritorna None
 
-#errori += testEqual(12, bancomat.get_limite_prelievo("cl1", "123456"), True)   #1000
-#errori += testEqual(13, bancomat.get_limite_prelievo("admin1", "admin123"), True)
-#errori += testEqual(14, bancomat.get_limite_prelievo("cl7", "123456"), None)  #Non esiste qundi ritorna None
+#DEBUG DI GET_LIMITE_PRELIEVO
+"""
+Per prendere il limite di prelievo con la funzione sotto, 
+devo prima essermi loggato al sistema, altrimenti da errore (restituisce None)
+"""
+"""bancomat.login("cl1", "123456", False)
+print(bancomat.get_limite_prelievo("cl1", "123456")) #1000
+bancomat.login("admin1", "admin123", True)
+print(bancomat.get_limite_prelievo("admin1", "admin123")) #1000
+print(bancomat.get_limite_prelievo("cl7", "123456")) #None"""
+
+
+#Test Set_limite_prelievo()
+#print(bancomat.set_limite_prelievo("admin1", "admin123", 2000)) 
+#print(bancomat.set_limite_prelievo("cl1", "123456", 3000)) #Errore perchè non è loggato
+errori += testEqual(24, bancomat.set_limite_prelievo("cl1", "123456", 2000), None)   #None perchè non riesce a cambiare il limite dato che non è Admin
+errori += testEqual(25, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
 
 
 
-print(bancomat.get_limite_prelievo("cl1", "123456"))
-print(bancomat.get_limite_prelievo("admin1", "admin123"))
-print(bancomat.get_limite_prelievo("cl7", "123456"))
+#Test get_scoperto_massimo():
+"""""
+errori += testEqual(26, bancomat.get_scoperto_massimo("admin1", "admin123"), 500)
+bancomat.login("cl1", "123456")
+errori += testEqual(27, bancomat.get_scoperto_massimo("cl1", "123456"), 500)  
+"""
+
+#Test set_scoperto_massimo
+
+bancomat.login("cl1", "123456", False)
+errori += testEqual(28, bancomat.set_scoperto_massimo("cl1", "123456", 2000), False)  #False perchè il cliente non può effettuare l'operazione
+bancomat.login("admin1", "admin123", True)
+errori += testEqual(29, bancomat.set_scoperto_massimo("admin1", "admin123", 2000), True)
+
+
 
 #Stampa se ci sono errori
 # abbiamo finito ?

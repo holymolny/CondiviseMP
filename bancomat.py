@@ -3,6 +3,7 @@ from utenti import *
 
 USER = ""
 PSW = ""
+ADMIN = False
 
 #CLASSE Bancomat
 class Bancomat:
@@ -123,6 +124,7 @@ class Bancomat:
         """
         global USER
         global PSW
+        global ADMIN
         
         logIn = False
         if username in self.utenti:
@@ -132,11 +134,13 @@ class Bancomat:
                     logIn = True
                     USER = utente.get_username()
                     PSW = utente.get_password()
+                    ADMIN = True
             elif not isAdmin and isinstance(utente, Cliente):
                 if utente.get_pin() == secret:
                     logIn = True
                     USER = utente.get_username()
                     PSW = utente.get_pin()
+                    ADMIN = False
             
             return logIn
 
@@ -147,16 +151,10 @@ class Bancomat:
         :param secret: la password o il pin dell'utente
         :return: il limite massimo di prelievo, None se il login non è riuscito
         """
-
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        print("Prelievo: " + USER + PSW)
         if(USER == username and PSW == secret):
             return self.limite_prelievo
         
-       
-
-
-
 
     def set_limite_prelievo(self, username, password, limite_prelievo):
         """Modifica il limite massimo di prelievo dopo aver effettuato il login.
@@ -166,12 +164,9 @@ class Bancomat:
         :return: True se il limite massimo di prelievo è stato modificato, False altrimenti
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        isLoggato = self.login(username, password, self.isAdmin)
-        if isLoggato:
-            if not isinstance(limite_prelievo, int):
-                return False
-            else:
-                self.limite_prelievo = limite_prelievo
+        if(username == USER and password == PSW and ADMIN): #Verifico di essere loggato al sistema
+            self.limite_prelievo = limite_prelievo
+            return True
     
     def get_scoperto_massimo(self, username, secret):
         """Restituisce lo scoperto massimo ammesso nel bancomat dopo aver effettuato il login.
@@ -179,7 +174,10 @@ class Bancomat:
         :param secret: la password o il pin dell'utente
         :return: lo scoperto massimo ammesso, None se il login non è riuscito
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if(username == USER and secret == PSW):
+            return self.scoperto_massimo
+       
 
     def set_scoperto_massimo(self, username, password, scoperto_massimo):
         """Modifica lo scoperto massimo ammesso nel bancomat dopo aver effettuato il login.
@@ -188,7 +186,13 @@ class Bancomat:
         :param scoperto_massimo: il nuovo scoperto massimo
         :return: True se lo scoperto massimo è stato modificato, False altrimenti        
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if(USER == username and PSW == password and ADMIN):
+            if isinstance(scoperto_massimo, int):
+                if(scoperto_massimo > 0):
+                    self.scoperto_massimo = scoperto_massimo
+                    return True
+        return False
 
     def get_saldo(self, username, pin):
         """Restituisce il saldo del Cliente dopo aver effettuato il login.
@@ -229,7 +233,9 @@ class Bancomat:
                     if somma == 0:
                         self.utenti[utente.get_username()] = (utente, somma)
                         isAdded = True
-                    #errore altrimenti
+                    #altrimenti genera eccezione
+                    else:
+                        raise ValueError("Saldo non valido per Admin")
                 else:
                     self.utenti[utente.get_username()] = (utente, somma)
                     isAdded = True
