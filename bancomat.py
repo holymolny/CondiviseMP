@@ -212,8 +212,12 @@ class Bancomat:
         :return: lista degli utenti, None se il login non è riuscito
         """
         if (USER == username and PSW == password and ADMIN):
+            lista_utenti = []
             for key in self.utenti.keys():
-                return self.utenti[key][0]
+                lista_utenti.append(self.utenti[key][0])
+            return lista_utenti
+        
+            
     
     def get_utente(self, username, password, u_utente):
         """Restituisce l'oggento Utente cercato ad un Admin dopo aver effettuato il login.
@@ -222,7 +226,10 @@ class Bancomat:
         :param u_tente: l'username dell'utente da cercare
         :return: l'utente cercato, None se il login non è riuscito o l'utente non esiste
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if USER == username and PSW == password and ADMIN:
+            if u_utente in self.utenti.keys():
+                return self.utenti[u_utente][0]
     
     def aggiungi_utente(self, username, password, utente, somma=0):
         """Aggiunge un utente non presente al sistema dopo aver effettuato il login.
@@ -254,25 +261,40 @@ class Bancomat:
         :param u_utente: l'username dell'utente da rimuovere
         :return: True se l'utente è stato rimosso, False altrimenti
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if (USER == username and PSW == password and ADMIN):
+            if u_utente in self.utenti.keys():
+                del self.utenti[u_utente]
+                return True
+        return False
 
     def modifica_somma(self, username, password, u_utente, somma):
         """Modifica la somma di un utente del sistema dopo aver effettuato il login.
         :param username: lo username dell'admin
         :param password: la password dell'admin
-        :param u_utente: l'useranme dell'utente di cui modificare la somma
+        :param u_utente: l'username dell'utente di cui modificare la somma
         :param somma: la nuova somma
         :return: True se la somma è stata modificata, False altrimenti
         """
+        if (USER == username and PSW == password and ADMIN):
+            if u_utente in self.utenti.keys():
+                somma = self.utenti[u_utente][1]
+                return True
+        return False
 
     def modifica_pin(self, username, secret, new_secret):
         """Modifica il pin di un utente dopo aver effettuato il login.
         :param username: lo username dell'utente
-        :param pin: il vecchio secret dell'utente (pin o password)
-        :param new_pin: il nuovo secret dell'utente (pin o password)
+        :param secret: il vecchio secret dell'utente (pin o password)
+        :param new_secret: il nuovo secret dell'utente (pin o password)
         :return: True se il pin è stato modificato, False altrimenti
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+        if USER == username and PSW == secret:
+            utente = self.utenti[username][0]
+            if isinstance(utente, Admin):
+                
+
 
                 
     def preleva(self, username, pin, somma):
