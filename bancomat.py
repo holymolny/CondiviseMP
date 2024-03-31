@@ -318,7 +318,7 @@ class Bancomat:
         :return: coppia (True, "") se il prelievo è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        
+
         if self.USER == username and self.PSW == pin and self.ADMIN:
                 return False, self.UTENTE_NON_VALIDO
         if self.USER == username and self.PSW == pin and not self.ADMIN:
@@ -341,18 +341,17 @@ class Bancomat:
         :return: coppia (True, "") se il deposito è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-    
+
+        print(isinstance(self.utenti[username][0], Admin))
+        if self.USER == username and self.PSW == pin and isinstance(self.utenti[username][0], Admin):
+            return False, self.UTENTE_NON_VALIDO
         if self.USER == username and self.PSW == pin and not self.ADMIN:
-            utente = self.utenti[username][0]
+            #utente = self.utenti[username][0]
             saldo_utente = self.utenti[username][1]
             if somma > 0 and isinstance(somma, int):
                 saldo_utente += somma
-                self.utenti[username] = (utente, saldo_utente)
-                return (True, "")
-            else:
-                return(False, self.UTENTE_NON_VALIDO)
-                
-                
+                self.utenti[username] = (username, saldo_utente)
+                return (True, "")        
 
     def trasferisci(self, username, pin, destinatario, somma):
         """Permette ad un cliente di trasferire ad un altro cliente dopo aver effettuato il login, andando in negativo di al massimo "scoperto_massimo".
