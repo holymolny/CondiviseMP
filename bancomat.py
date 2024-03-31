@@ -407,8 +407,14 @@ class Bancomat:
         :param filename: il nome del file su cui salvare gli utenti
         :return: True se il salvataggio è riuscito, False altrimenti
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
-    
+        #  pass #istruzione che non fa niente --> da sostituire con il codice
+
+        if USER == username and PSW == password and not ADMIN:
+            with open (filename, 'w') as file:
+                for utente, saldo in self.utenti:
+                    file.write(self.utenti[utente][0] + self.utenti[utente][1])
+                    return True
+
     def carica_da_file(self, username, password, filename):
         """Carica scoperto_massimo, limite_prelievo e gli utenti da un file dopo aver effettuato il login (gestire eccezioni relative ai file).
         Sovrascrive lo stato attuale del Bancomat.
