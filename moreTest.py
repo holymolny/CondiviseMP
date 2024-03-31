@@ -132,20 +132,23 @@ errori += testEqual(29, bancomat.login("cl2", "000001",False), False)
 errori += testEqual(30, bancomat.login("cl2", "123456",True), False)
 
 ####################################### TEST DI MAIN.PY ##########################################################
-print(bancomat.login("cl2", "123456"))
-print(bancomat.preleva("cl2", "123456", 100))
+"""print(bancomat.login("cl2", "123456"))
+print(bancomat.preleva("cl2", "123456", 100))"""
 errori += testEqual(31, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
 errori += testEqual(32, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
 errori += testEqual(33, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
 errori += testEqual(34, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
-errori += testEqual(35, bancomat.deposita("cl2", "123456", 1000), (True,"")) #900
+errori += testEqual(35, bancomat.deposita("cl2", "123456", 1000), (True,"")) #90
+"""print(bancomat.deposita("cl2", "123456", 1000))
+print(bancomat.utenti["cl2"][1])"""
+
 errori += testEqual(36, bancomat.preleva("cl2", "123456", 500), (True, "")) #400
 errori += testEqual(37, bancomat.trasferisci("cl2", "123456", "cl3", 500), (True,"")) #-100
 errori += testEqual(38, bancomat.trasferisci("cl2", "123456", "admin1", 1), (False, Bancomat.UTENTE_NON_VALIDO))
 errori += testEqual(39, bancomat.trasferisci("cl2", "123456", "cl3", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
 errori += testEqual(40, bancomat.get_saldo("cl2", "123456"), -100)
 errori += testEqual(41, bancomat.deposita("admin1", "admin123", 1000), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
-errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
+errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo"""
 
 
 """print(bancomat.modifica_pin("cl2", "000000", "123456"))"""
@@ -155,15 +158,15 @@ errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Ban
 print(bancomat.preleva("cl2", "123456", 2000))
 print(bancomat.preleva("cl2", "123456", 500))
 print(bancomat.preleva("cl2", "123455", 100))
-errori += testEqual(28, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
-errori += testEqual(29, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
-errori += testEqual(30, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
-errori += testEqual(31, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))"""
+errori += testEqual(43, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
+errori += testEqual(44, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
+errori += testEqual(45, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
+errori += testEqual(46, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))"""
 
 #TEST GET_LIMITE_PRELIEVO
-errori += testEqual(32, bancomat.get_limite_prelievo("cl1", "123456"), None)   #1000 quando è loggato
-errori += testEqual(33, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
-errori += testEqual(34, bancomat.get_limite_prelievo("cl7", "123456"), None)  #Non esiste qundi ritorna None
+errori += testEqual(47, bancomat.get_limite_prelievo("cl1", "123456"), None)   #1000 quando è loggato
+errori += testEqual(48, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
+errori += testEqual(49, bancomat.get_limite_prelievo("cl7", "123456"), None)  #Non esiste qundi ritorna None
 
 #DEBUG DI GET_LIMITE_PRELIEVO
 """
@@ -183,36 +186,36 @@ print(bancomat.get_limite_prelievo("cl7", "123456")) #None
 #print(bancomat.set_limite_prelievo("cl1", "123456", 3000)) #Errore perchè non è loggato
 
 
-errori += testEqual(35, bancomat.set_limite_prelievo("cl1", "123456", 2000), None)   #None perchè non riesce a cambiare il limite dato che non è Admin
-errori += testEqual(36, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
+errori += testEqual(50, bancomat.set_limite_prelievo("cl1", "123456", 2000), None)   #None perchè non riesce a cambiare il limite dato che non è Admin
+errori += testEqual(51, bancomat.get_limite_prelievo("admin1", "admin123"), 1000)
 
 
 
 #Test get_scoperto_massimo():
 
-errori += testEqual(37, bancomat.get_scoperto_massimo("admin1", "admin123"), 500)
+errori += testEqual(52, bancomat.get_scoperto_massimo("admin1", "admin123"), 500)
 bancomat.login("cl1", "123456")
-errori += testEqual(38, bancomat.get_scoperto_massimo("cl1", "123456"), 500)  
+errori += testEqual(53, bancomat.get_scoperto_massimo("cl1", "123456"), 500)  
 
 
 #Test set_scoperto_massimo
 
 bancomat.login("cl1", "123456", False)
-errori += testEqual(39, bancomat.set_scoperto_massimo("cl1", "123456", 2000), False)  #False perchè il cliente non può effettuare l'operazione
+errori += testEqual(54, bancomat.set_scoperto_massimo("cl1", "123456", 2000), False)  #False perchè il cliente non può effettuare l'operazione
 bancomat.login("admin1", "admin123", True)
-errori += testEqual(40, bancomat.set_scoperto_massimo("admin1", "admin123", 2000), True)
+errori += testEqual(55, bancomat.set_scoperto_massimo("admin1", "admin123", 2000), True)
 
 #Test funzione get_saldo()
 
 
 #Test su rimuovi utente
-errori += testEqual(41, bancomat.rimuovi_utente("admin1", "admin123","cl1"), True)
-errori += testEqual(42, bancomat.rimuovi_utente("admin3", "admin123","cl1"), False) #False perchè admin3 non esiste
-errori += testEqual(43, bancomat.rimuovi_utente("admin1", "admin123","cl7"), False)
+errori += testEqual(56, bancomat.rimuovi_utente("admin1", "admin123","cl1"), True)
+errori += testEqual(57, bancomat.rimuovi_utente("admin3", "admin123","cl1"), False) #False perchè admin3 non esiste
+errori += testEqual(58, bancomat.rimuovi_utente("admin1", "admin123","cl7"), False)
 
 
 #Test su modifica_somma
-errori += testEqual(44, bancomat.modifica_somma("admin1", "admin123","cl3", 1000), True)
+errori += testEqual(59, bancomat.modifica_somma("admin1", "admin123","cl3", 1000), True)
 
 #Stampa se ci sono errori
 # abbiamo finito ?

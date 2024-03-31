@@ -151,7 +151,8 @@ class Bancomat:
         #pass #istruzione che non fa niente --> da sostituire con il codice
         if(self.USER == username and self.PSW == secret):
             return self.limite_prelievo
-        
+        else:
+            return None
 
     def set_limite_prelievo(self, username, password, limite_prelievo):
         """Modifica il limite massimo di prelievo dopo aver effettuato il login.
@@ -162,9 +163,12 @@ class Bancomat:
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
         if(username == self.USER and password == self.PSW and self.ADMIN): #Verifico di essere loggato al sistema
-            self.limite_prelievo = limite_prelievo
-            return True
-    
+            if isinstance(limite_prelievo, int) and limite_prelievo > 0:
+                self.limite_prelievo = limite_prelievo
+                return True
+            else:
+                return False
+            
     def get_scoperto_massimo(self, username, secret):
         """Restituisce lo scoperto massimo ammesso nel bancomat dopo aver effettuato il login.
         :param username: lo username dell'utente
@@ -201,6 +205,8 @@ class Bancomat:
         if (self.USER == username and self.PSW == pin and not self.ADMIN):
             saldo = self.utenti[username][1]
             return saldo
+        else:
+            return None
     
     def get_lista_utenti(self, username, password):
         """Restituisce la lista degli utenti ad un Admin dopo aver effettuato il login.
@@ -213,7 +219,8 @@ class Bancomat:
             for key in self.utenti.keys():
                 lista_utenti.append(self.utenti[key][0])
             return lista_utenti
-        
+        else:
+            return None
             
     
     def get_utente(self, username, password, u_utente):
@@ -227,6 +234,8 @@ class Bancomat:
         if self.USER == username and self.PSW == password and self.ADMIN:
             if u_utente in self.utenti.keys():
                 return self.utenti[u_utente][0]
+        else:
+            return None
     
     def aggiungi_utente(self, username, password, utente, somma=0):
         """Aggiunge un utente non presente al sistema dopo aver effettuato il login.
@@ -309,18 +318,19 @@ class Bancomat:
         :return: coppia (True, "") se il prelievo è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
+        
+        if self.USER == username and self.PSW == pin and self.ADMIN:
+                return False, self.UTENTE_NON_VALIDO
         if self.USER == username and self.PSW == pin and not self.ADMIN:
-            utente = self.utenti[username][0]
             saldo_utente = self.utenti[username][1]
             if somma > self.limite_prelievo:
                 return False, self.LIMITE_PRELIEVO_SUPERATO
-            if saldo_utente-somma > -(self.scoperto_massimo):
+            if saldo_utente-somma < -(self.scoperto_massimo):
                 return False, self.FONDI_INSUFFICIENTI
-            
             saldo_utente -= somma 
-            self.utenti[username] = (utente, saldo_utente)
+            self.utenti[username] = (username, saldo_utente)
             return (True, "")
-        return self.LOGIN_ERRATO
+        return (False, self.LOGIN_ERRATO)
                     
 
     def deposita(self, username, pin, somma):
@@ -340,7 +350,7 @@ class Bancomat:
                 self.utenti[username] = (utente, saldo_utente)
                 return (True, "")
             else:
-                return(False, "Inserire una somma valida")
+                return(False, self.UTENTE_NON_VALIDO)
                 
                 
 
@@ -353,18 +363,22 @@ class Bancomat:
         :return: coppia (True, "") se il trasferimento è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        
-        if self.USER == username and self.PSW == pin and not self.ADMIN:
-            if isinstance(destinatario, Cliente):
-                if somma > 0 and isinstance(somma, int) and somma <= Bancomat.get_limite_prelievo() and (self.utenti[username][1] - somma > Bancomat.get_scoperto_massimo()):
-                    """non sono convinto se al posto di Bancomat. ecc ecc ci vada self.initPrelevo e self.initScoperto o è la stessa cosa"""
-                    self.utenti[username][1] = self.utenti[username][1] - somma
-                    self.utenti[destinatario][1] = self.utenti[destinatario][1] + somma
-                    return(True, "")
-                else:
-                    return (False, "Inserire un valore corretto")
 
+        """ print(self.utenti[username])
+        print(self.utenti[destinatario])
+        print(somma)"""
 
+        if self.USER == username and self.PSW == pin and not self.ADMIN :
+            #verifico che destinatario non sia admin e somma
+            if not isinstance(self.utenti[destinatario][0], Admin) and somma > 0 and somma <= self.limite_prelievo and (self.utenti[username][1] - somma > -(self.scoperto_massimo)):
+                    self.utenti[username] = (username, self.utenti[username][1] - somma)
+                    self.utenti[destinatario] = (destinatario, self.utenti[destinatario][1] +somma)
+                    return (True, "")
+                #se il destinatario è un amministratore
+            if isinstance(self.utenti[destinatario][0], Admin):
+                    return (False, self.UTENTE_NON_VALIDO)
+            if self.utenti[username][1]- somma < -(self.scoperto_massimo):
+                    return (False, self.FONDI_INSUFFICIENTI)
 
 
     def lista_clienti_con_saldo_negativo(self, username, password):
