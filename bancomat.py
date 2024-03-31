@@ -371,7 +371,16 @@ class Bancomat:
         :param password: la password dell'admin
         :return: lista di oggetti clienti con saldo negativo, None se il login non è riuscito
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+
+        if USER == username and PSW == password and not ADMIN:
+            lista_saldoNegativo = []
+            for utente, saldo in self.utenti:
+                if isinstance(utente, Cliente) and saldo < 0:
+                    lista_saldoNegativo.append(utente, saldo)
+                    return lista_saldoNegativo
+        else:
+            return None
         
     def lista_clienti_con_saldo_almeno(self, username, password, somma=0):
         """Restituisce la lista dei clienti con saldo almeno "somma" dopo aver effettuato il login.
@@ -380,7 +389,16 @@ class Bancomat:
         :param somma: la somma minima
         :return: lista di oggetti clienti con saldo almeno "somma", None se il login non è riuscito
         """
-        pass #istruzione che non fa niente --> da sostituire con il codice
+        #pass #istruzione che non fa niente --> da sostituire con il codice
+
+        if USER == username and PSW == password and not ADMIN:
+            lista_saldoSomma = []
+            for utente, saldo in self.utenti:
+                if isinstance(utente, Cliente) and saldo >= somma:
+                    lista_saldoSomma.append(utente, saldo)
+                    return lista_saldoSomma
+        else:
+            return None
 
     def salva_su_file(self, username, password, filename):
         """Salva scoperto_massimo, limite_prelievo e gli utenti su un file dopo aver effettuato il login (gestire eccezioni relative ai file).
