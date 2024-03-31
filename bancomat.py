@@ -139,8 +139,7 @@ class Bancomat:
                     self.USER = utente.get_username()
                     self.PSW = utente.get_pin()
                     self.ADMIN = False
-            print(self.ADMIN, self.USER, self.PSW)
-            return logIn
+        return logIn
 
 
     def get_limite_prelievo(self, username, secret):
@@ -240,21 +239,18 @@ class Bancomat:
         isAdded = False
         if username == self.USER and password == self.PSW and self.ADMIN:
             if not utente.get_username() in self.utenti:
-                print("ciao")
                 if isinstance(somma, int):
-                    if isinstance(utente, Admin) and somma == 0:
-                        self.utenti[utente.get_username()] = (utente, somma)
-                        isAdded = True
-                    else: #altrimenti genera eccezione
-                        raise ValueError("Saldo non valido per Admin") #Saldo per Admin sempre = 0
-                    
                     if isinstance(utente, Cliente):
                         self.utenti[utente.get_username()] = (utente, somma)
                         isAdded = True
+                    if isinstance(utente, Admin):
+                        if somma == 0:
+                            self.utenti[utente.get_username()] = (utente, somma)
+                            isAdded = True
+                        else: #altrimenti genera eccezione
+                            raise ValueError("Saldo non valido per Admin") #Saldo per Admin sempre = 0
                 else:
                     raise TypeError("Il saldo deve essere un numero")
-            else:
-                return self.UTENTE_NON_VALIDO
         return isAdded
 
     def rimuovi_utente(self, username, password, u_utente):
@@ -295,11 +291,10 @@ class Bancomat:
         #pass #istruzione che non fa niente --> da sostituire con il codice
         if self.USER == username and self.PSW == secret:
             utente = self.utenti[username][0]
-            print(utente)
             if self.ADMIN:
                 utente.set_password(new_secret)
                 return True
-            elif not self.ADMIN:
+            else:
                 utente.set_pin(new_secret)
                 return True
         return False
