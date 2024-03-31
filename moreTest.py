@@ -124,13 +124,27 @@ except ValueError:
 errori += testEqual(24, bancomat.login("cl2", "000000",False), True)
 errori += testEqual(25, bancomat.login("cl2", "000001",False), False)
 errori += testEqual(26, bancomat.login("cl2", "000000",True), False)
-print(bancomat.USER, bancomat.PSW, bancomat.ADMIN)
 errori += testEqual(27, bancomat.modifica_pin("cl2", "000000", "123456"), True)
 
 #Test login clienti post modifica_pin()
 errori += testEqual(28, bancomat.login("cl2", "123456",False), True)
 errori += testEqual(29, bancomat.login("cl2", "000001",False), False)
 errori += testEqual(30, bancomat.login("cl2", "123456",True), False)
+
+####################################### TEST DI MAIN.PY ##########################################################
+print(bancomat.preleva("cl2", "123456", 100))
+errori += testEqual(31, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
+errori += testEqual(32, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
+errori += testEqual(33, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
+errori += testEqual(34, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
+errori += testEqual(35, bancomat.deposita("cl2", "123456", 1000), (True,"")) #900
+errori += testEqual(36, bancomat.preleva("cl2", "123456", 500), (True, "")) #400
+errori += testEqual(37, bancomat.trasferisci("cl2", "123456", "cl3", 500), (True,"")) #-100
+errori += testEqual(38, bancomat.trasferisci("cl2", "123456", "admin1", 1), (False, Bancomat.UTENTE_NON_VALIDO))
+errori += testEqual(39, bancomat.trasferisci("cl2", "123456", "cl3", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
+errori += testEqual(40, bancomat.get_saldo("cl2", "123456"), -100)
+errori += testEqual(41, bancomat.deposita("admin1", "admin123", 1000), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
+errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
 
 
 """print(bancomat.modifica_pin("cl2", "000000", "123456"))"""
@@ -139,11 +153,11 @@ errori += testEqual(30, bancomat.login("cl2", "123456",True), False)
 """print(bancomat.preleva("cl2", "123456", 100))
 print(bancomat.preleva("cl2", "123456", 2000))
 print(bancomat.preleva("cl2", "123456", 500))
-print(bancomat.preleva("cl2", "123455", 100))"""
+print(bancomat.preleva("cl2", "123455", 100))
 errori += testEqual(28, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
 errori += testEqual(29, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
 errori += testEqual(30, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
-errori += testEqual(31, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
+errori += testEqual(31, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))"""
 
 #TEST GET_LIMITE_PRELIEVO
 errori += testEqual(32, bancomat.get_limite_prelievo("cl1", "123456"), None)   #1000 quando è loggato

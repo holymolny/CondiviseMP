@@ -310,14 +310,15 @@ class Bancomat:
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
         if self.USER == username and self.PSW == pin and not self.ADMIN:
+            utente = self.utenti[username][0]
             saldo_utente = self.utenti[username][1]
             if somma > self.limite_prelievo:
                 return False, self.LIMITE_PRELIEVO_SUPERATO
-            if saldo_utente-somma > self.scoperto_massimo:
+            if saldo_utente-somma > -(self.scoperto_massimo):
                 return False, self.FONDI_INSUFFICIENTI
             
-            saldo_utente -= somma
-            self.utenti[username][1] = saldo_utente
+            saldo_utente -= somma 
+            self.utenti[username] = (utente, saldo_utente)
             return True, ""
         return self.LOGIN_ERRATO
                     
@@ -332,8 +333,11 @@ class Bancomat:
         #pass #istruzione che non fa niente --> da sostituire con il codice
     
         if self.USER == username and self.PSW == pin and not self.ADMIN:
+            utente = self.utenti[username][0]
+            saldo_utente = self.utenti[username][1]
             if somma > 0 and isinstance(somma, int):
-                self.utenti[username][1] = self.utenti[username][1] + somma
+                saldo_utente += somma
+                self.utenti[username] = (utente, saldo_utente)
                 return (True, "")
             else:
                 return(False, "Inserire una somma valida")

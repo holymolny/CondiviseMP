@@ -70,7 +70,7 @@ class Cliente(Utente):
         return self.pin
     
     def set_pin(self, newPin):
-        if not isinstance(newPin, str) or not newPin.isalpha():
+        if not isinstance(newPin, str):
             raise TypeError("Il pin deve essere una stringa di numeri") 
         else:
             if not re.match(r'^\d{6}$', newPin):
