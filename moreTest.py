@@ -132,6 +132,7 @@ errori += testEqual(29, bancomat.login("cl2", "000001",False), False)
 errori += testEqual(30, bancomat.login("cl2", "123456",True), False)
 
 ####################################### TEST DI MAIN.PY ##########################################################
+print(bancomat.login("cl2", "123456"))
 print(bancomat.preleva("cl2", "123456", 100))
 errori += testEqual(31, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
 errori += testEqual(32, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))

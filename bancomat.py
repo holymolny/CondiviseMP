@@ -319,7 +319,7 @@ class Bancomat:
             
             saldo_utente -= somma 
             self.utenti[username] = (utente, saldo_utente)
-            return True, ""
+            return (True, "")
         return self.LOGIN_ERRATO
                     
 
