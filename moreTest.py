@@ -114,21 +114,30 @@ errori += testEqual(21, bancomat.login("admin1", "admin2",True), False)
 
 
 #Test login clienti
-"""errori += testEqual(28, bancomat.login("cl2", "123456",False), True)
-errori += testEqual(29, bancomat.login("cl2", "000001",False), False)"""
-errori += testEqual(30, bancomat.login("cl2", "123456",True), False)
-errori += testEqual(26, bancomat.modifica_pin("cl2", "000000", "123456"), True)
-print(bancomat.modifica_pin("cl2", "000000", "123456"))
+#LOGIN DI ADMIN
+bancomat.login("admin1", "admin123", True)
+bancomat.modifica_pin("admin1", "admin123", "nuovapsw123")
+try: #genera eccezione perchè la psw deve contenere almeno un char
+    errori += testEqual(22, bancomat.modifica_pin("admin1", "admin123", "123456"), False) 
+    print(f"Test {4}: Failed")
+except ValueError:
+    pass
+
+errori += testEqual(28, bancomat.login("cl2", "123456",False), True)
+errori += testEqual(29, bancomat.login("cl2", "000001",False), False)
+errori += testEqual(22, bancomat.login("cl2", "123456",True), False)
+errori += testEqual(23, bancomat.modifica_pin("cl2", "000000", "123456"), True)
+"""print(bancomat.modifica_pin("cl2", "000000", "123456"))"""
 #print(bancomat.login("cl2", "123456",False))
 #Test preleva()
 """print(bancomat.preleva("cl2", "123456", 100))
 print(bancomat.preleva("cl2", "123456", 2000))
 print(bancomat.preleva("cl2", "123456", 500))
 print(bancomat.preleva("cl2", "123455", 100))"""
-errori += testEqual(22, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
-errori += testEqual(23, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
-errori += testEqual(24, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
-errori += testEqual(25, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
+errori += testEqual(24, bancomat.preleva("cl2", "123456", 100), (True,"")) #-100
+errori += testEqual(25, bancomat.preleva("cl2", "123456", 2000), (False, Bancomat.LIMITE_PRELIEVO_SUPERATO))
+errori += testEqual(26, bancomat.preleva("cl2", "123456", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
+errori += testEqual(27, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
 
 #TEST GET_LIMITE_PRELIEVO
 errori += testEqual(26, bancomat.get_limite_prelievo("cl1", "123456"), None)   #1000 quando è loggato

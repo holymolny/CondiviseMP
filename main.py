@@ -11,7 +11,7 @@ bancomat = Bancomat(mainAdmin, 500, 1000)
 
 errori += testEqual(1, bancomat.login("admin1", "admin123",True), True)
 errori += testEqual(2, bancomat.login("admin1", "admin2",True), False)
-errori += testEqual(3, bancomat.login("admin1", "admin123",False), True)
+errori += testEqual(3, bancomat.login("admin1", "admin123",False), True) #Da chiedere al prof
 
 #Test creazione utenti
 cliente1 = Cliente("cl1", "123456", "Mario", "Rossi")
@@ -67,7 +67,7 @@ try:
 except ValueError:
     pass
 
-try:
+try:        #Da chiedere al prof
     adminx = Admin("adminx", "a1")
     errori += 1
     print(f"Test {11}: Failed")
@@ -75,7 +75,8 @@ except ValueError:
     pass
 
 #Test aggiunta/modifica utenti
-errori += testEqual(12, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1000), True)
+print(bancomat.aggiungi_utente("admin1", "admin123", cliente1, 1000))
+errori += testEqual(12, bancomat.aggiungi_utente("admin1", "admin123", cliente1, 1000), True)
 errori += testEqual(13, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1000), False)
 errori += testEqual(14, bancomat.aggiungi_utente("admin1", "admin123",cliente2), True)
 errori += testEqual(15, bancomat.aggiungi_utente("admin1", "admin123",cliente3,500), True)
