@@ -341,7 +341,7 @@ class Bancomat:
         :return: coppia (True, "") se il deposito è riuscito, (False, motivazione) altrimenti. La motivazione deve essere una delle stringhe dichiarate sotto la definizione della classe.
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-
+        print(self.utenti[username][0])
         print(isinstance(self.utenti[username][0], Admin))
         if self.USER == username and self.PSW == pin and isinstance(self.utenti[username][0], Admin):
             return False, self.UTENTE_NON_VALIDO

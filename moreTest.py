@@ -147,6 +147,9 @@ errori += testEqual(37, bancomat.trasferisci("cl2", "123456", "cl3", 500), (True
 errori += testEqual(38, bancomat.trasferisci("cl2", "123456", "admin1", 1), (False, Bancomat.UTENTE_NON_VALIDO))
 errori += testEqual(39, bancomat.trasferisci("cl2", "123456", "cl3", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
 errori += testEqual(40, bancomat.get_saldo("cl2", "123456"), -100)
+
+#HO FATTO IL LOGIN CON ADMIN SE NO MI DA ERRORE:
+bancomat.login("admin1", "admin123", True)
 errori += testEqual(41, bancomat.deposita("admin1", "admin123", 1000), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
 errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo"""
 
