@@ -218,7 +218,9 @@ errori += testEqual(58, bancomat.rimuovi_utente("admin1", "admin123","cl7"), Fal
 
 
 #Test su modifica_somma
+errori += testEqual(12, bancomat.aggiungi_utente("admin1", "admin123",cliente1,1000), True)
 errori += testEqual(59, bancomat.modifica_somma("admin1", "admin123","cl3", 1000), True)
+errori += testEqual(60, bancomat.modifica_somma("cl1", "123456","cl3", 1000), False)
 
 #Stampa se ci sono errori
 # abbiamo finito ?
