@@ -618,6 +618,7 @@ class Bancomat:
                     file.write("Scoperto massimo: " + str(self.scoperto_massimo) + "\n")
                     file.write("Limite prelievo: " + str(self.limite_prelievo) + "\n")
                     for utente in self.utenti.keys():
+                        #file.write(str(self.utenti[utente]))
                         file.write(str(self.utenti[utente][0])+" "+ str(self.utenti[utente][1]) + "\n")
                     return True
             except IOError:
@@ -643,7 +644,7 @@ class Bancomat:
                     #scorro le righe del file
                     #Non avevamo capito il metodo proposto nel main e abbiamo sviluppato una serie di operazioni che servivano per leggere il file e caricare in automatico i dati sul nuovo dizionario 
                     #In realtà le tuple vengono aggiunte dopo a mano nel main
-                    """for riga in file:
+                    for riga in file:
                         riga = riga.strip()
                         if riga.startswith("Scoperto massimo:"):
                             self.scoperto_massimo = int(riga.split(" ")[2])
@@ -655,7 +656,7 @@ class Bancomat:
                         elif riga.startswith("Admin:"):
                             user, psw, saldo = riga.split()[1:]
                             self.utenti[user] = (Admin(user, psw), int(saldo))
-                            #print(user, psw)"""
+                            #print(user, psw)
                     return True
             except IOError:
                 #print("Errore nell'apertura del file: " + filename)

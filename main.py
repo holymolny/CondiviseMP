@@ -104,47 +104,32 @@ errori += testEqual(33, bancomat.preleva("cl2", "123456", 500), (False, Bancomat
 errori += testEqual(34, bancomat.preleva("cl2", "123455", 100), (False, Bancomat.LOGIN_ERRATO))
 errori += testEqual(35, bancomat.deposita("cl2", "123456", 1000), (True,"")) #900
 errori += testEqual(36, bancomat.preleva("cl2", "123456", 500), (True, "")) #400
-#print(bancomat.utenti)
+
 errori += testEqual(37, bancomat.trasferisci("cl2", "123456", "cl3", 500), (True,"")) #-100
 errori += testEqual(38, bancomat.trasferisci("cl2", "123456", "admin1", 1), (False, Bancomat.UTENTE_NON_VALIDO))
 errori += testEqual(39, bancomat.trasferisci("cl2", "123456", "cl3", 500), (False, Bancomat.FONDI_INSUFFICIENTI))
 errori += testEqual(40, bancomat.get_saldo("cl2", "123456"), -100)
 
-print(bancomat.deposita("admin1", "admin123", 1000))
 errori += testEqual(41, bancomat.deposita("admin1", "admin123", 1000), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
 errori += testEqual(42, bancomat.preleva("admin1", "admin123", 100), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
 
 #Test su liste
 errori += testEqual(43, bancomat.lista_clienti_con_saldo_negativo("admin1", "admin123"),[cliente2])
-#Devo fare il login con cl2 altrimenti non va il deposita
-bancomat.login("cl2", "123456", False)
 errori += testEqual(44, bancomat.deposita("cl2", "123456", 100), (True,"")) #0
-#Faccio login con admin1
-bancomat.login("admin1", "admin123",True)
 errori += testEqual(45, bancomat.lista_clienti_con_saldo_negativo("admin1", "admin123"),[])
-#Faccio login con admin2
-bancomat.login("admin2", "admin123",True)
 errori += testEqual(46, bancomat.lista_clienti_con_saldo_almeno("admin2", "admin123",0),[cliente2, cliente3, cliente4,cliente1])
 errori += testEqual(47, bancomat.lista_clienti_con_saldo_almeno("admin2", "admin123",1001),[cliente3,cliente4])
 errori += testEqual(48, bancomat.lista_clienti_con_saldo_almeno("admin3", "admin123",1000),None)
 
 #Test su file e uguaglianza
-#Faccio login con admin1
-bancomat.login("admin1", "admin123",True)
-errori += testEqual(49, bancomat.carica_da_file("admin1", "admin123","bancomat123.txt"), False)
-#errori += testEqual(50, bancomat.salva_su_file("admin1", "admin123","bancomat.txt"), True)
+errori += testEqual(49, bancomat.carica_da_file("admin1", "admin123", "bancomat123.txt"), False)
+errori += testEqual(50, bancomat.salva_su_file("admin1", "admin123", "bancomat.txt"), True)
 bancomat2 = Bancomat(secondAdmin, 100, 500)
 errori += testEqual(51, (bancomat == bancomat2), False)
-#Faccio la login al bancomat2 da admin2
-bancomat2.login("admin2", "admin123",True)
 errori += testEqual(52, bancomat2.carica_da_file("admin2", "admin123","bancomat.txt"), True)
-#print(bancomat2.carica_da_file("admin2", "admin123","bancomat.txt"))
-print(bancomat)
-print(bancomat2)
 errori += testEqual(53, bancomat, bancomat2)
 
 bancomat2 = Bancomat(secondAdmin, 500, 1000)
-bancomat2.login("admin2", "admin123",True)
 bancomat2.aggiungi_utente("admin2", "admin123",cliente2,0)
 bancomat2.aggiungi_utente("admin2", "admin123",cliente1,1000)
 bancomat2.aggiungi_utente("admin2", "admin123",mainAdmin,0)
