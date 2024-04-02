@@ -139,6 +139,8 @@ errori += testEqual(51, (bancomat == bancomat2), False)
 bancomat2.login("admin2", "admin123",True)
 errori += testEqual(52, bancomat2.carica_da_file("admin2", "admin123","bancomat.txt"), True)
 #print(bancomat2.carica_da_file("admin2", "admin123","bancomat.txt"))
+print(bancomat)
+print(bancomat2)
 errori += testEqual(53, bancomat, bancomat2)
 
 bancomat2 = Bancomat(secondAdmin, 500, 1000)
