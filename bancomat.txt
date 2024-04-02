@@ -1,0 +1,3 @@
+Scoperto massimo: 500
+Limite_prelievo: 1000
+(Utente = admin1, 0)

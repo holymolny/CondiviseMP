@@ -460,13 +460,18 @@ class Bancomat:
         #  pass #istruzione che non fa niente --> da sostituire con il codice
 
         if self.USER == username and self.PSW == password and self.ADMIN:
-            with open (filename, 'w') as file:
-                for utente in self.utenti:
-                    file.write(self.utenti[utente][0] + self.utenti[utente][1])
-                    return True
+            try:
+                with open (filename, 'w') as file:
+                    file.write("Scoperto massimo: " + str(self.scoperto_massimo) + "\n")
+                    file.write("Limite_prelievo: " + str(self.limite_prelievo) + "\n")
+                    for utente in self.utenti.keys():
+                        file.write(str(self.utenti[utente])+ "\n")
+                        return True
+            except IOError:
+                print("Errore nel salvataggio del file " + filename)
         else:
             return False
-
+ 
     def carica_da_file(self, username, password, filename):
         """Carica scoperto_massimo, limite_prelievo e gli utenti da un file dopo aver effettuato il login (gestire eccezioni relative ai file).
         Sovrascrive lo stato attuale del Bancomat.
@@ -475,12 +480,16 @@ class Bancomat:
         :param filename: il nome del file da cui caricare gli utenti
         :return: True se il caricamento è riuscito, False altrimenti
         """
+
         #pass #istruzione che non fa niente --> da sostituire con il codice
 
-        if self.USER == username and self.PSW == password and not self.ADMIN:
-            with open (filename, 'r') as file:
-                for utente in self.utenti:
-                    file.read(self.utenti[utente][0] + self.utenti[utente][1])
-                    return True
+        if self.USER == username and self.PSW == password and self.ADMIN:
+            try:
+                with open (filename, 'r') as file:
+                    for utente in self.utenti:
+                        file.read(self.utenti[utente][0] + self.utenti[utente][1])
+                        return True
+            except IOError:
+                print("Errore nell'apertura del file: " + filename)
         else:
-            return self.LOGIN_ERRATO
+            return False

@@ -129,6 +129,8 @@ errori += testEqual(47, bancomat.lista_clienti_con_saldo_almeno("admin2", "admin
 errori += testEqual(48, bancomat.lista_clienti_con_saldo_almeno("admin3", "admin123",1000),None)
 
 #Test su file e uguaglianza
+#Faccio login con admin1
+bancomat.login("admin1", "admin123",True)
 errori += testEqual(49, bancomat.carica_da_file("admin1", "admin123","bancomat123.txt"), False)
 errori += testEqual(50, bancomat.salva_su_file("admin1", "admin123","bancomat.txt"), True)
 bancomat2 = Bancomat(secondAdmin, 100, 500)
