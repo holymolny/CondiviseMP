@@ -459,13 +459,13 @@ class Bancomat:
         """
         #  pass #istruzione che non fa niente --> da sostituire con il codice
 
-        if self.USER == username and self.PSW == password and not self.ADMIN:
+        if self.USER == username and self.PSW == password and self.ADMIN:
             with open (filename, 'w') as file:
                 for utente in self.utenti:
                     file.write(self.utenti[utente][0] + self.utenti[utente][1])
                     return True
         else:
-            return self.LOGIN_ERRATO
+            return False
 
     def carica_da_file(self, username, password, filename):
         """Carica scoperto_massimo, limite_prelievo e gli utenti da un file dopo aver effettuato il login (gestire eccezioni relative ai file).
