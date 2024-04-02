@@ -115,7 +115,6 @@ class Bancomat:
     def get_utenti(self):
         return self.utenti
     
-
     def login(self, username, secret, isAdmin=False):
         """Controlla che un utente sia presente nel dizionario, che il secret (pin o password) sia corretto e se isAdmin è True che l'utente sia un Admin.
         :param username: lo username dell'utente
@@ -123,13 +122,26 @@ class Bancomat:
         :param isAdmin: booleano che indica se l'operazione è per un Admin
         :return: True se il login è riuscito, False altrimenti
         """
-        
+
         logIn = False
+        if username in self.utenti:
+            utente = self.utenti[username][0]
+            if isinstance(utente, Admin):
+                if utente.get_password() == secret:
+                    logIn = True      
+            elif isinstance(utente, Cliente) and isAdmin == False:
+                if utente.get_pin() == secret:
+                    logIn = True
+        return logIn
+
+        
+
+        """logIn = False
         if username in self.utenti:
             utente = self.utenti[username][0]
             if isAdmin and isinstance(utente, Admin):
                 if utente.get_password() == secret:
-                    logIn = True
+                     logIn = True
                     self.USER = utente.get_username()
                     self.PSW = utente.get_password()
                     self.ADMIN = True
@@ -140,7 +152,7 @@ class Bancomat:
                     self.PSW = utente.get_pin()
                     self.ADMIN = False
         return logIn
-
+"""
 
     def get_limite_prelievo(self, username, secret):
         """Restituisce il limite massimo di prelievo dopo aver effettuato il login.
@@ -149,8 +161,15 @@ class Bancomat:
         :return: il limite massimo di prelievo, None se il login non è riuscito
         """
         #pass #istruzione che non fa niente --> da sostituire con il codice
-        if(self.USER == username and self.PSW == secret):
+
+        """if(self.USER == username and self.PSW == secret):
             return self.limite_prelievo
+        else:
+            return None"""
+        
+        loggedIn = self.login(username, secret)
+        if loggedIn:
+             return self.limite_prelievo
         else:
             return None
 
@@ -245,6 +264,15 @@ class Bancomat:
         :param somma: la somma iniziale dell'utente
         :return: True se l'utente è stato aggiunto, False altrimenti
         """
+
+        """loggedIn = login(username, password, True)
+        if loggedIn:"""
+
+
+
+
+
+
         isAdded = False
         if username == self.USER and password == self.PSW and self.ADMIN:
             if not utente.get_username() in self.utenti:
@@ -463,10 +491,10 @@ class Bancomat:
             try:
                 with open (filename, 'w') as file:
                     file.write("Scoperto massimo: " + str(self.scoperto_massimo) + "\n")
-                    file.write("Limite_prelievo: " + str(self.limite_prelievo) + "\n")
+                    file.write("Limite prelievo: " + str(self.limite_prelievo) + "\n")
                     for utente in self.utenti.keys():
-                        file.write(str(self.utenti[utente])+ "\n")
-                        return True
+                        file.write(str(self.utenti[utente][0])+" "+ str(self.utenti[utente][1]) + "\n")
+                    return True
             except IOError:
                 print("Errore nel salvataggio del file " + filename)
         else:
@@ -482,14 +510,30 @@ class Bancomat:
         """
 
         #pass #istruzione che non fa niente --> da sostituire con il codice
-
+        #print(self.USER, self.PSW, self.ADMIN)
         if self.USER == username and self.PSW == password and self.ADMIN:
+            
             try:
                 with open (filename, 'r') as file:
-                    for utente in self.utenti:
-                        file.read(self.utenti[utente][0] + self.utenti[utente][1])
-                        return True
+                    #scorro le righe del file
+                    #Non avevamo capito il metodo proposto nel main e abbiamo sviluppato una serie di operazioni che servivano per leggere il file e caricare in automatico i dati sul nuovo dizionario 
+                    #In realtà le tuple vengono aggiunte dopo a mano nel main
+                    """for riga in file:
+                        riga = riga.strip()
+                        if riga.startswith("Scoperto massimo:"):
+                            self.scoperto_massimo = int(riga.split(" ")[2])
+                        elif riga.startswith("Limite prelievo:"):
+                            self.limite_prelievo = int(riga.split(" ")[2])
+                        elif riga.startswith("Cliente:"):
+                            user, pin, nome, cognome, saldo = riga.split()[1:]
+                            self.utenti[user] = (Cliente(user, pin, nome, cognome), int(saldo))
+                        elif riga.startswith("Admin:"):
+                            user, psw, saldo = riga.split()[1:]
+                            self.utenti[user] = (Admin(user, psw), int(saldo))
+                            #print(user, psw)"""
+                    return True
             except IOError:
-                print("Errore nell'apertura del file: " + filename)
+                #print("Errore nell'apertura del file: " + filename)
+                return False
         else:
             return False

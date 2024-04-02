@@ -122,8 +122,8 @@ class Admin(Utente):
         #Controllo effettuato con regex
         if not isinstance(initPassword, str):
             raise TypeError
-        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).+$', initPassword):
-            raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
+        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', initPassword):
+            raise ValueError("La password deve contenere almeno un carattere e almeno una cifra ed essere lunga almeno 8 caratteri")
         self.password = initPassword
 
     #Metodi getter e setter per password
@@ -134,7 +134,7 @@ class Admin(Utente):
         #Controllo su password
         if not isinstance(newPassword, str):
             raise TypeError
-        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).+$', newPassword):
+        elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', newPassword):
             raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
         self.password = newPassword
 
