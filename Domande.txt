@@ -7,3 +7,49 @@ FUNZIONAMENTO DIZIONARIO
   di questi utenti poi questi a loro volta non possono accedere nuovamente.
 - modifica nome utente si può aggiungere?
 - come funziona il metodo lista_clienti_con_saldo_almeno(self, username, password, somma=0), restituisce i clienti con saldo>somma?
+
+
+
+DOMANDE SUL CODICE 
+-Test 3: errori += testEqual(3, bancomat.login("admin1", "admin123",False), True) #Da chiedere al prof
+Perchè dovrebbe restituire True? Chi sta effettuando il login è un admin (lo user e la psw appartengono ad un admin), ma viene passato False come isAdmin. Quindi non dovrebbe fare il login e non dovrebbe restituire True ma False.
+
+-Test 11: 
+try:        #Da chiedere al prof
+    adminx = Admin("adminx", "a1")
+    errori += 1
+    print(f"Test {11}: Failed")
+except ValueError:
+    pass
+
+    Perchè dovrebbe generare eccezione ValueError? Non c'è niente nelle specifiche fornite che dica che questi parametri sono sbagliati.
+
+- def get_saldo(self, username, pin)
+Questa funzione può essere acceduta solo dal cliente? O anche da admin? Secondo i test del main in particolare:
+errori += testEqual(25, bancomat.get_saldo("cl3", "111111"), 1000)
+la richiesta per vedere il saldo viene fatta da admin1 in quanto utente loggato al sistema e dovrebbe ritornare il valore del saldo di un cliente. Ma per essere visto questo dato si richiede anche che venga inserito il pin del cliente che dovrebbe essere un valore privato e non conosciuto dall'admin, è corretto?
+
+- def modifica_pin(self, username, secret, new_secret)
+Questa funzione da chi viene eseguita? Solo admin o tutti gli utenti in generale?
+Nella definizione c'è scritto questo:
+"""Modifica il pin di un utente dopo aver effettuato il login.
+        :param username: lo username dell'utente
+        :param secret: il vecchio secret dell'utente (pin o password)
+        :param new_secret: il nuovo secret dell'utente (pin o password)
+        :return: True se il pin è stato modificato, False altrimenti
+        """
+Quindi si parla di utente generico, però nel main viene invocata prima del login di cliente2 così:
+errori += testEqual(26, bancomat.modifica_pin("cl2", "000000", "123456"), True)
+Quindi il pin del cliente può essere modificato solo da admin e non anche in autonomia?
+
+Il login del test 28 di conseguenza non funziona
+
+- Test 41:
+errori += testEqual(41, bancomat.deposita("admin1", "admin123", 1000), (False, Bancomat.UTENTE_NON_VALIDO)) #admin non può cambiare il saldo
+
+restituisce None perchè l'ultimo utente che ha effettuato il login al bancomat è un cliente, se aggiungiamo 
+bancomat.login("admin1", "admin123",True)
+subito prima del test 41, ovviamente funziona, ma se non viene inserito l'ultimo utente ad essersi loggato è il cl2.
+
+-Test 42:
+stessa cosa, non è loggato l'admin in questione
