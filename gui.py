@@ -24,86 +24,28 @@ import tkinter as tk
 from tkinter import Tk
 from tkinter import messagebox
 
-"""class finestra_bancomat:
-    def __init__(self, root):
-        self.root = root
-        #Non vanno
-        self.root.title = "Bancomata MolPol"
-        self.geometry = ("800x600")
+class BancomatApp():
+    def __init__(self):
+        self.title("Bancomat Molpol")
+        self.geometry("300x300")
 
-    ## creazione dei bottoni
-        
-        #CLIENTE
-        self.btn_prelievo = tk.Button(bg="yellow", text="Prelievo", width=25, height=3)
-        self.btn_trasferisci = tk.Button(bg="pink", text="Trasferisci", width=25, height=3)
-        self.btn_saldo = tk.Button(bg="light green", text="Saldo", width=25, height=3)
+        bancomat = Bancomat({},0,0)
+        bancomat.carica_da_file()
+        print(bancomat)
 
-        #GESTORE:
-        self.btn_prelievo = tk.Button(bg="yellow", text="Prelievo", width=25, height=3)
-        self.btn_trasferisci = tk.Button(bg="pink", text="Trasferisci", width=25, height=3)
-        self.btn_saldo = tk.Button(bg="light green", text="Saldo", width=25, height=3)
-     
-
-
-# attivazione dell'interfaccia
-root = tk.Tk()
-finestra_bancomat(root)
-# task 4: avvio del ciclo ascolto eventi
-root.mainloop()"""
+    #FUNZIONE CHE MI SERVE PER CARICARE IL FILE DATI
+    def carica_file(self):
+        try:
+            #carico il file in lettura 
+            with open("bancomat.txt", "r") as file:
+                stato_bancomat = file.read()
+                self.bancomat.carica_stato(stato_bancomat)
+        except FileNotFoundError:
+            messagebox.showerror("Errore", "Non è stato trovato il file bancomat.txt")
+            self.destroy()
 
 
-bancomat = Bancomat()
-bancomat.carica_da_file("bancomat.txt")
-print(bancomat)
 
-class myApp:
-    def __init__ (self,root):
-        self.root=root
-        self.bancomat = Bancomat()
-        
-        #Aspetto
-        self.root.title("Libri")
-        #label con libri
-        self.frame = tk.Frame(self.root,relief=tk.RAISED, borderwidth=1)
-        self.frame.pack(fill=tk.BOTH,expand=True)
-        self.librivar = tk.StringVar()
-        self.libri = tk.Label(self.frame, textvariable=self.librivar)
-        self.libri.pack(fill=tk.BOTH,expand=True)
 
-        #bottoni
-        self.btn_1=tk.Button(text="Carica da file",background="light green",width=20)
-        self.btn_2=tk.Button(text="Salva su file",background="light blue",width=20)
-        self.btn_3=tk.Button(text="Inserisci Libro",background="orange",width=20)
-        self.btn_4=tk.Button(text="Elimina Libro",background="yellow",width=20)
-
-        self.btn_1.pack(side = tk.LEFT)
-        self.btn_2.pack(side = tk.LEFT)
-        self.btn_3.pack(side = tk.LEFT)
-        self.btn_4.pack(side = tk.LEFT)
-
-        #bind
-        self.btn_1.bind("<Button-1>", self.carica)
-        self.btn_2.bind("<Button-1>", self.salva)
-        self.btn_3.bind("<Button-1>", self.inserisci)
-        self.btn_4.bind("<Button-1>", self.elimina)
-
-        #entry
-        self.entry = tk.Entry(self.root, width=100)
-        self.entry.pack(side = tk.LEFT, expand=True)
-
-    def carica(self, evento):
-        self.catologo.read_from_file(self.entry.get())
-        self.librivar.set(self.catologo)
-    def salva(self, evento):
-        self.catologo.write_to_file(self.entry.get())
-    def inserisci(self, evento):
-        libro = self.entry.get().split(":")
-        self.catologo.aggiungi_libro(Libro(libro[0],libro[1],libro[2],libro[3]))
-        self.librivar.set(self.catologo)
-    def elimina(self, evento):
-        self.catologo.elimina_libro(int(self.entry.get()))
-        self.librivar.set(self.catologo)
-
-w = tk.Tk()
-myApp(w)
-w.mainloop()
+app = BancomatApp
+app.mainloop()
