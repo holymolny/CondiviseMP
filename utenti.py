@@ -56,12 +56,12 @@ class Cliente(Utente):
         self.pin = initPin
 
         #Controlli su nome (stringa di char)
-        if not isinstance(initNome, str) or not initNome.isalpha():
+        if not isinstance(initNome, str) or not re.match(r'[^\d]*$', initNome):
             raise TypeError("Il nome deve essere una stringa di caratteri")
         self.nome = initNome
 
         #Controlli su cognome (stringa di char)
-        if not isinstance(initCognome, str) or not initCognome.isalpha():
+        if not isinstance(initCognome, str) or not re.match(r'[^\d]*$', initCognome):
             raise TypeError("Il cognome deve essere una stringa di caratteri")
         self.cognome = initCognome
 
