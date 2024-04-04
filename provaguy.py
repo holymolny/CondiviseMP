@@ -9,48 +9,68 @@ class BancomatApp():
         self.root = root
         self.root.title("Bancomat Molpol")
         self.root.geometry("800x600")
-        self.cliccato_var = tk.BooleanVar(value=False)
+        #self.cliccato_var = tk.BooleanVar(value=False)
 
         #Utilizzo di grid per posizionare il frame principale
         """self.frame = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.pack()"""
 
-        #GRID:
-        for i in range(3):
-            window.columnconfigure(i, weight=1, minsize=75)
-            window.columnconfigure(i, weight=1, minsize=50)
-            if (i==3):
-                for j in range(4):
-                    frame = tk.Frame(
-                        master = window,
-                        relief = tk.RAISED,
-                        borderwidth=1
-                    )
-        frame.grid(row=i, column=j, padx = 5, pady = 5) #padding
-        label = tk.Label(master=frame, text=f"Row {i}\nColumn {j}")
-        label.pack()
-            
+        # Creazione dei frame che suddividono la window
+        self.frame1 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame2 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame3 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
 
-        #PROVA MOLNY
-        name_var=tk.StringVar()
-        passw_var=tk.StringVar()
+        # Posizionamento dei frame all'interno della finestra principale
+        self.frame1.grid(row=0, column=0, padx=10, pady=10)
+        self.frame2.grid(row=1, column=0, padx=10, pady=10)
+        self.frame3.grid(row=2, column=0, padx=10, pady=10)
 
-        name_label = tk.Label(self.frame, text = 'Username', font=('calibre',10, 'bold'))
-        name_entry = tk.Entry(self.frame,textvariable = name_var, font=('calibre',10,'normal'))
-        passw_label = tk.Label(self.frame, text = 'Password', font = ('calibre',10,'bold'))
-        passw_entry=tk.Entry(self.frame, textvariable = passw_var, font = ('calibre',10,'normal'), show = '*')
-        sub_btn=tk.Button(self.frame,text = 'Login')
+        #Configuro il frame alla grandezza dell'intera finestra
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+
+        #Widget dentro il primo frame
+        self.btnLoad = tk.Button(self.frame1, text="Carica Dataset")
+        self.btnLoad.grid(row=0,column=0)
     
-        name_label.grid(row=0,column=0)
-        name_entry.grid(row=0,column=1)
-        passw_label.grid(row=1,column=0)
-        passw_entry.grid(row=1,column=1)
-        sub_btn.grid(row=2,column=1)
+        #CONFIGURAZIONE SECONDO FRAME
+        #variabili di controllo username e password
+        self.user = tk.StringVar()
+        self.psw = tk.StringVar()
+
+        #Label e entry per username e password
+        self.lblUser = tk.Label(self.frame2, text = 'Username', font=('calibre',10, 'bold'))
+        self.ntrUser = tk.Entry(self.frame2,textvariable = self.user, font=('calibre',10,'normal'))
+
+        self.lblPsw = tk.Label(self.frame2, text = 'Password', font = ('calibre',10,'bold'))
+        self.ntrPsw = tk.Entry(self.frame2, textvariable = self.psw, font = ('calibre',10,'normal'), show = '*')
+        
+        self.btnLogin = tk.Button(self.frame2, text="Login")
+
+        #Inserimento nel grid layout
+        self.lblUser.grid(row=0,column=0)
+        self.ntrUser.grid(row=0,column=1)
+        self.lblPsw.grid(row=1,column=0)
+        self.ntrPsw.grid(row=1,column=1)
+        self.btnLogin.grid(row=2,column=1)
+        
+
+        #CONFIGURAZIONE TERZO FRAME
+        self.btnSaldo = tk.Button(self.frame3, text="Vedi saldo")
+        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo")
+        self.btnDeposito = tk.Button(self.frame3, text="Deposita")
+        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash")
+
+        #Inserimento nel grid
+        self.btnSaldo.grid(row=0, column=0, padx=15, pady=15)
+        self.btnPrelievo.grid(row=0, column=1, padx=15, pady=15)
+        self.btnDeposito.grid(row=0, column=2, padx=15, pady=15)
+        self.btnTransf.grid(row=0, column=3, padx=15, pady=15)
 
         #Creazione oggetto Bancomat
-        self.userAdmin = ""
-        self.pswAdmin = ""
+        #self.userAdmin = ""
+        #self.pswAdmin = ""
         #self.btnLoad = Admin(userAdmin, pswAdmin)
         #userAdmin, pswAdmin, filename = self.caricaDataset()
         """systemAdmin = Admin(userAdmin, pswAdmin)"""
@@ -63,11 +83,11 @@ class BancomatApp():
         #BOTTONI
         
         #bottone che mi permette di caricare il file.txt
-        self.btnLoad = tk.Button(self.frame, text="Carica Dataset")
-        self.btnLoad.grid(row=2, column=2, padx=2, pady=2)
+        """self.btnLoad = tk.Button(self.frame, text="Carica Dataset")
+        self.btnLoad.grid(row=2, column=2, padx=2, pady=2)"""
 
         #BINDING
-        self.btnLoad.bind("<Button-1>", self.caricaDataset)
+        #self.btnLoad.bind("<Button-1>", self.caricaDataset)
 
     #FUNZIONI
     
