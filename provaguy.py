@@ -71,6 +71,7 @@ class BancomatApp():
                             self.bancomat = Bancomat(Admin(self.userAdmin, self.pswAdmin), 0, 0)
                             print(self.bancomat) 
                             print(self.bancomat.carica_da_file(self.userAdmin, self.pswAdmin, filename))
+                            #Cosi prende in considereazione solo il primo admin che trova
                             exit
                             #print(self.bancomat)S
             except IOError:
