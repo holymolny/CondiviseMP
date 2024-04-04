@@ -42,7 +42,7 @@ class BancomatApp():
 
         #Label, Entry e rispettivi grid
         #Archivio da cercare per caricarlo o salvarlo 
-        self.cerca = tk.Label(self.frame, text="Nome archivio:")
+        self.cerca = tk.Label(self.frame, text="Nome del file:")
         self.cerca.grid(row=2, column=0, padx=2, pady=2, sticky="w")
         #Campo di ricerca dell'archivio
         self.entry_cerca_arc = tk.Entry(self.frame, width=30)
