@@ -41,18 +41,8 @@ class BancomatApp():
 
 
         #CONFIGURAZIONE PRIMO FRAME
-        self.titolo = tk.Label(
-            self.frame1,
-            text ="Bancomat MolPol",
-            padx=0,
-            pady=0,
-            width = 300,
-            height= 100,
-            background="light blue",
-            foreground="white",
-            font=('Helvetica', 50)
-            )
-        self.titolo.pack()
+        
+        
         self.btnLoad = tk.Button(self.frame1, text="Carica Dataset", background="light blue", width=20)
         self.btnLoad.pack()
 
@@ -106,9 +96,13 @@ class BancomatApp():
 
         #CONFIGURAZIONE QUARTO FRAME
         self.limitevar = tk.StringVar()
-        self.lblLimite = tk.Label(self.frame4, text = 'Username', font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        self.lblLimite = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        
+        self.scopertovar = tk.StringVar()
+        self.lblScoperto = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar)
         
         self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
 
 
         
@@ -200,8 +194,7 @@ class BancomatApp():
         psw = self.ntrPsw.get().strip()
         if self.bancomat.get_limite_prelievo(user, psw):
             self.lblLimite.pack(side = tk.TOP)
-            self.limitevar.set("Limite prelievo = ")
-
+            self.limitevar.set("Limite prelievo = " + str(self.bancomat.get_limite_prelievo(user, psw)))
         else:
             messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
@@ -209,7 +202,8 @@ class BancomatApp():
         user = self.ntrUser.get().strip()
         psw = self.ntrPsw.get().strip()
         if self.bancomat.get_scoperto_massimo(user, psw):
-            messagebox.showinfo("Operazione riuscita", "Limite denaro è: " + str(self.bancomat.get_limite_prelievo(user, psw)))
+            self.lblLimite.pack(side = tk.TOP)
+            self.limitevar.set("Lo scoperto massimo è: " + str(self.bancomat.get_scoperto_massimo(user, psw)))
         else:
             messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
