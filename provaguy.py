@@ -23,10 +23,10 @@ class BancomatApp():
         self.frame1 = tk.Frame(master = window, background="light blue", width=600, height=20)
         self.frame2 = tk.Frame(master = window)
         self.frame3 = tk.Frame(master = window, background="light blue", width=600, height=20)
-        self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="light blue")
-        self.frame5 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="green")
-        self.frame6 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background = "pink")
-        self.frame7 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background= "yellow")
+        self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame5 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame6 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame7 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
         
 
         # Posizionamento dei frame all'interno della finestra principale
@@ -34,6 +34,7 @@ class BancomatApp():
         self.frame2.pack()
         self.frame3.pack()
         self.frame4.pack()
+        self.frame5.pack()
         """self.frame5.grid(row=4, column=0, padx=10, pady=10)
         self.frame6.grid(row=5, column=0, padx=10, pady=10)
         self.frame6.grid(row=6, column=0, padx=10, pady=10)"""
@@ -44,20 +45,20 @@ class BancomatApp():
         self.root.grid_columnconfigure(0, weight=1)
 
         #CONFIGURAZIONE SECONDO FRAME:
-        self.titolo = tk.Label(self.frame2, text ="Bancomat MolPol", background="light blue", width = 600, foreground="white", font=('Helvetica', 20), anchor= "center")
+        self.titolo = tk.Label(self.frame1, text ="Bancomat MolPol", background="light blue", width = 600, foreground="white", font=('Helvetica', 20), anchor= "center")
         self.titolo.pack()
 
         #CONFIGURAZIONE IV FRAME
-        self.btnLoad = tk.Button(self.frame4, text="Carica Dataset", background="light blue", width=20, anchor="center")
+        self.btnLoad = tk.Button(self.frame2, text="Carica Dataset", background="light blue", width=20, anchor="center")
         self.btnLoad.pack()
         
         #Label e entry per username e password
         
-        self.lblUser = tk.Label(self.frame2, text = 'Username', font=('calibre',10, 'bold'), state="disabled")
-        self.ntrUser = tk.Entry(self.frame2, font=('calibre',10,'normal'), state="disabled")
+        self.lblUser = tk.Label(self.frame3, text = 'Username', font=('calibre',10, 'bold'), state="disabled")
+        self.ntrUser = tk.Entry(self.frame3, font=('calibre',10,'normal'), state="disabled")
 
-        self.lblPsw = tk.Label(self.frame2, text = 'Password', font = ('calibre',10,'bold'), state="disabled")
-        self.ntrPsw = tk.Entry(self.frame2, font = ('calibre',10,'normal'), show = '*', state="disabled")
+        self.lblPsw = tk.Label(self.frame3, text = 'Password', font = ('calibre',10,'bold'), state="disabled")
+        self.ntrPsw = tk.Entry(self.frame3, font = ('calibre',10,'normal'), show = '*', state="disabled")
         
         #self.btnLogin = tk.Button(self.frame2, text="Login", state="disabled")
 
@@ -76,11 +77,11 @@ class BancomatApp():
 
 
         #CONFIGURAZIONE TERZO FRAME
-        self.btnLimite = tk.Button(self.frame3, text="Vedi limite", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnScoperto = tk.Button(self.frame3, text="Vedi scoperto", background="light green", width=20, padx=10, pady=10, state="disabled")
-        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo", background="light green", width=20, padx=10, pady=10, state="disabled")
-        self.btnDeposito = tk.Button(self.frame3, text="Deposita", background="light green", width=20, padx=10, pady=10, state="disabled")
-        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnLimite = tk.Button(self.frame4, text="Vedi limite", background="light blue", width=20, padx=10, pady=10, state="disabled")
+        self.btnScoperto = tk.Button(self.frame4, text="Vedi scoperto", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnPrelievo = tk.Button(self.frame4, text="Prelievo", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnDeposito = tk.Button(self.frame4, text="Deposita", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnTransf = tk.Button(self.frame4, text="Trasferisci cash", background="light green", width=20, padx=10, pady=10, state="disabled")
 
         #Inserimento nel grid
 
@@ -97,20 +98,23 @@ class BancomatApp():
 
         #CONFIGURAZIONE QUARTO FRAME
         self.limitevar = tk.StringVar()
-        self.lblLimite = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        self.lblLimite = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.limitevar)
         
         self.scopertovar = tk.StringVar()
-        self.lblScoperto = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        self.lblScoperto = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.scopertovar)
         
-        self.saldo = tk.StringVar()
-        self.lblSaldo = tk.Label(self.frame4, font=('calibre',10, 'bold'))
-        self.lblCifraPrelievo = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da prelevare")
-        self.ntrCifraPrelievo = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        self.saldovar = tk.StringVar()
+        self.lblSaldo = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.saldovar)
+        self.lblCifraPrelievo = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire somma da prelevare")
+        self.ntrCifraPrelievo = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
         
 
-        
+        #MOSTRA LIMITE E SCOPERTO
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
+
+        #PRELIEVO
+        self.lblSaldo.pack_forget()
         self.lblCifraPrelievo.pack_forget()
         self.ntrCifraPrelievo.pack_forget()
 
@@ -209,15 +213,16 @@ class BancomatApp():
         user = self.ntrUser.get().strip()
         psw = self.ntrPsw.get().strip()
         if self.bancomat.get_scoperto_massimo(user, psw):
-            self.lblLimite.pack(side = tk.TOP)
-            self.limitevar.set("Lo scoperto massimo è: " + str(self.bancomat.get_scoperto_massimo(user, psw)))
+            self.lblScoperto.pack(side = tk.TOP)
+            self.scopertovar.set("Lo scoperto massimo è: " + str(self.bancomat.get_scoperto_massimo(user, psw)))
         else:
             messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
     def prelievo(self, event):
         user = self.ntrUser.get().strip()
         psw = self.ntrPsw.get().strip()
-        if self.bancomat.preleva(user, psw):
+        somma = self.ntrCifraPrelievo.get().strip()
+        if self.bancomat.preleva(user, psw, somma):
             messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
         else:
             messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
