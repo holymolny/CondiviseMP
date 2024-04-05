@@ -15,9 +15,45 @@ e salvare su file il nuovo stato del Bancomat;
 
 L’aspetto generale dell’interfaccia grafica `e lasciato alla creativit`a dello studente.
 """
-
 from bancomat import *
 from utenti import *
 import tkinter as tk
-from tkinter import Tk
 from tkinter import messagebox
+from tkinter import filedialog
+
+class BancomatApp():
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Bancomat Molpol")
+        self.root.geometry("500x420")
+        window.resizable(False,False)
+    
+    # Creazione dei frame che suddividono la window
+        self.frame1 = tk.Frame(master = window, background="light blue", width=500, height=20)
+        self.frame2 = tk.Frame(master = window)
+        self.frame3 = tk.Frame(master = window, background="light blue", width=500, height=20)
+        self.frame4 = tk.Frame(master = window)
+    # Posizionamento dei frame all'interno della finestra principale
+        self.frame1.pack()
+        self.frame2.pack()
+        self.frame3.pack()
+        self.frame4.pack()
+    
+        #TITOLO
+        self.titolo = tk.Label(
+            self.frame2,
+            text ="Bancomat MolPol",
+            background="light blue",
+            width = 500,
+            foreground="white",
+            font=('Helvetica', 20),
+            anchor= "center"
+            )
+        self.titolo.pack()
+
+        self.btnLoad = tk.Button(self.frame4, text="Carica Dataset", background="light blue", width=20, anchor="center")
+        self.btnLoad.pack()
+        
+window = tk.Tk()
+BancomatApp(window)
+window.mainloop()
