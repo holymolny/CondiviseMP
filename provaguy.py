@@ -18,60 +18,108 @@ class BancomatApp():
 
 
         # Creazione dei frame che suddividono la window
-        self.frame1 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
-        self.frame2 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
-        self.frame3 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
+        self.frame1 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="light blue")
+        self.frame2 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="green")
+        self.frame3 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background = "pink")
+        self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background= "yellow")
+        
 
         # Posizionamento dei frame all'interno della finestra principale
         self.frame1.grid(row=0, column=0, padx=10, pady=10)
-        self.frame2.grid(row=1, column=0, padx=10, pady=10)
-        self.frame3.grid(row=2, column=0, padx=10, pady=10)
+        self.frame2.grid(row=1, column=1, padx=10, pady=10)
+        self.frame3.grid(row=1, column=2, padx=10, pady=10)
+        self.frame4.grid(row=1, column=3, padx=10, pady=10)
+        """self.frame5.grid(row=4, column=0, padx=10, pady=10)
+        self.frame6.grid(row=5, column=0, padx=10, pady=10)
+        self.frame6.grid(row=6, column=0, padx=10, pady=10)"""
+        
 
         #Configuro il frame alla grandezza dell'intera finestra
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
 
-        #Widget dentro il primo frame
-        #TITOLO
-        self.btnLoad = tk.Button(self.frame1, text="Carica Dataset")
-        self.btnLoad.grid(row=0,column=0)
 
 
-        #CONFIGURAZIONE SECONDO FRAME
+        #CONFIGURAZIONE PRIMO FRAME
+        self.titolo = tk.Label(
+            self.frame1,
+            text ="Bancomat MolPol",
+            padx=0,
+            pady=0,
+            width = 300,
+            height= 100,
+            background="light blue",
+            foreground="white",
+            font=('Helvetica', 50)
+            )
+        self.titolo.pack()
+        self.btnLoad = tk.Button(self.frame1, text="Carica Dataset", background="light blue", width=20)
+        self.btnLoad.pack()
 
-        self.btnLimite = tk.Button(self.frame3, text="Vedi limite", state="disabled")
-        self.btnScoperto = tk.Button(self.frame3, text="Vedi scoperto", state="disabled")
-        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo", state="disabled")
-        self.btnDeposito = tk.Button(self.frame3, text="Deposita", state="disabled")
-        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash", state="disabled")
-
-        #Inserimento nel grid
-        self.btnLimite.grid(row=0, column=0, padx=15, pady=15)
-        self.btnScoperto.grid(row=0, column=1, padx=15, pady=15)
-        self.btnPrelievo.grid(row=0, column=2, padx=15, pady=15)
-        self.btnDeposito.grid(row=0, column=3, padx=15, pady=15)
-        self.btnTransf.grid(row=0, column=4, padx=15, pady=15)
         
-
-        #CONFIGURAZIONE TERZO FRAME
+        
+        #CONFIGURAZIONE SECONDO FRAME
         
         #Label e entry per username e password
+        
         self.lblUser = tk.Label(self.frame2, text = 'Username', font=('calibre',10, 'bold'), state="disabled")
         self.ntrUser = tk.Entry(self.frame2, font=('calibre',10,'normal'), state="disabled")
 
         self.lblPsw = tk.Label(self.frame2, text = 'Password', font = ('calibre',10,'bold'), state="disabled")
         self.ntrPsw = tk.Entry(self.frame2, font = ('calibre',10,'normal'), show = '*', state="disabled")
         
-        self.btnLogin = tk.Button(self.frame2, text="Login", state="disabled")
+        #self.btnLogin = tk.Button(self.frame2, text="Login", state="disabled")
 
         #Inserimento nel grid layout
-        self.lblUser.grid(row=0,column=0, )
+        self.lblUser.grid(row=0,column=0)
         self.ntrUser.grid(row=0,column=1)
         self.lblPsw.grid(row=1,column=0)
         self.ntrPsw.grid(row=1,column=1)
-        self.btnLogin.grid(row=2,column=1)    
+        #self.btnLogin.grid(row=2,column=1)    
+
+        """self.lblUser.pack(side = tk.TOP)
+        self.ntrUser.pack(side = tk.TOP)
+        self.lblPsw.pack(side = tk.TOP)
+        self.ntrPsw.pack(side = tk.TOP)"""
+        #self.btnLogin.pack(side = tk.LEFT)
 
 
+        #CONFIGURAZIONE TERZO FRAME
+        self.btnLimite = tk.Button(self.frame3, text="Vedi limite", background="light blue", width=20, padx=10, pady=10, state="disabled")
+        self.btnScoperto = tk.Button(self.frame3, text="Vedi scoperto", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnDeposito = tk.Button(self.frame3, text="Deposita", background="light green", width=20, padx=10, pady=10, state="disabled")
+        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash", background="light green", width=20, padx=10, pady=10, state="disabled")
+
+        #Inserimento nel grid
+
+        self.btnLimite.pack(side = tk.TOP)
+        self.btnScoperto.pack(side = tk.TOP)
+        self.btnPrelievo.pack(side = tk.TOP)
+        self.btnDeposito.pack(side = tk.TOP)
+        self.btnTransf.pack(side = tk.TOP)
+        """self.btnLimite.grid(row=1, column=0, padx=15, pady=15)
+        self.btnScoperto.grid(row=2, column=0, padx=15, pady=15)
+        self.btnPrelievo.grid(row=3, column=0, padx=15, pady=15)
+        self.btnDeposito.grid(row=4, column=0, padx=15, pady=15)
+        self.btnTransf.grid(row=5, column=0, padx=15, pady=15)"""
+
+        #CONFIGURAZIONE QUARTO FRAME
+        self.limitevar = tk.StringVar()
+        self.lblLimite = tk.Label(self.frame4, text = 'Username', font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        
+        self.lblLimite.pack_forget()
+
+
+        
+        
+
+
+        """self.btnLimite.grid(row=0, column=0, padx=15, pady=15)
+        self.btnScoperto.grid(row=0, column=1, padx=15, pady=15)
+        self.btnPrelievo.grid(row=0, column=2, padx=15, pady=15)
+        self.btnDeposito.grid(row=0, column=3, padx=15, pady=15)
+        self.btnTransf.grid(row=0, column=4, padx=15, pady=15)"""
 
         #BINDING
         self.btnLoad.bind("<Button-1>", self.caricaDataset)
@@ -80,7 +128,9 @@ class BancomatApp():
         self.btnPrelievo.bind("<Button-1>", self.prelievo)
         self.btnDeposito.bind("<Button-1>", self.deposita)
         self.btnTransf.bind("<Button-1>", self.trasferisci)
-        self.btnLogin.bind("<Button-1>", self.login)
+        #self.btnLogin.bind("<Button-1>", self.login)
+
+        
 
         #VARIABILI DI CONTROLLO
         self.load = False
@@ -109,15 +159,32 @@ class BancomatApp():
                             self.userAdmin = user
                             self.pswAdmin = psw
                             self.bancomat = Bancomat(Admin(self.userAdmin, self.pswAdmin), 0, 0)
-                            self.bancomat.carica_da_file(self.userAdmin, self.pswAdmin, filename)
-                            #Cosi prende in considereazione solo il primo admin che trova
-                            messagebox.showinfo("Operazione riuscita", "File caricato con successo!")
-                            self.load = True
-                            self.btnLimite.config(state="normal")
+                            if self.bancomat.carica_da_file(self.userAdmin, self.pswAdmin, filename):
+                                #Messaggio di buon fine
+                                messagebox.showinfo("Operazione riuscita", "File caricato con successo!")
+
+                                #Abilita il login
+                                self.lblUser.config(state="normal")
+                                self.ntrUser.config(state="normal")
+                                self.lblPsw.config(state="normal")
+                                self.ntrPsw.config(state="normal")
+
+                                #Abilita i button per le operazioni
+                                self.btnLimite.config(state="normal")
+                                self.btnScoperto.config(state="normal")
+                                self.btnDeposito.config(state="normal")
+                                self.btnPrelievo.config(state="normal")
+                                self.btnTransf.config(state="normal")
+
+                                #Cosi prende in considerazione solo il primo admin che trova
+                                break
+                            else:
+                                messagebox.showerror("Attenzione", "Errore nel caricamento del file " + filename) 
+                            """self.btnLimite.config(state="normal")
                             self.btnScoperto.config(state="normal")
                             self.btnDeposito.config(state="normal")
                             self.btnPrelievo.config(state="normal")
-                            self.btnTransf.config(state="normal")
+                            self.btnTransf.config(state="normal")"""
             except IOError:
                 messagebox.showerror("Attenzione", "Errore nel caricamento del file " + filename)
                 return False 
@@ -126,43 +193,25 @@ class BancomatApp():
             messagebox.showwarning("Attenzione", "Caricare il file in formato .txt")
             return False
         
-    def attivazioneLogin(self, event):
-        #Attivazione dei campi per effettuare il login
-        self.lblUser.config(state="normal")
-        self.lblPsw.config(state="normal")
-        self.ntrUser.config(state="normal")
-        self.ntrPsw.config(state="normal")
-        self.btnLogin.config(state="normal")    
 
-
-    def login(self, event):
-        if self.load:
-            user = self.ntrUser.get().strip()
-            psw = self.ntrPsw.get().strip()
-            if user != "" and psw != "":
-                if self.bancomat.login(user, psw):
-                    messagebox.showinfo("Operazione riuscita", "Login effettuato con successo!")
-                    self.check_login = True
-                    #Attivo i button sotto
-                    
-                else:
-                    messagebox.showerror("Errore", "Login non effettuato. Per favore controlla le credenziali e riprova.")
-            else:
-                messagebox.showwarning("Attenzione", "Riempire i campi prima di premere sul Login")
-        else:
-            messagebox.showerror("Attenzione", "Per favore, carica il file prima di effettuare il login :)")
-    
     def mostraLimite(self, event):
         #Attivazione dei campi per effettuare il login
-        self.attivazioneLogin(event)
-
         user = self.ntrUser.get().strip()
         psw = self.ntrPsw.get().strip()
-        #if self.bancomat.get_limite_prelievo(user, psw):
+        if self.bancomat.get_limite_prelievo(user, psw):
+            self.lblLimite.pack(side = tk.TOP)
+            self.limitevar.set("Limite prelievo = ")
+
+        else:
+            messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
     def mostraScoperto(self, event):
-        self.attivazioneLogin(event)
-
+        user = self.ntrUser.get().strip()
+        psw = self.ntrPsw.get().strip()
+        if self.bancomat.get_scoperto_massimo(user, psw):
+            messagebox.showinfo("Operazione riuscita", "Limite denaro è: " + str(self.bancomat.get_limite_prelievo(user, psw)))
+        else:
+            messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
     def prelievo(self, event):
         self.attivazioneLogin(event)
