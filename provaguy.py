@@ -9,6 +9,8 @@ class BancomatApp():
         self.root = root
         self.root.title("Bancomat Molpol")
         self.root.geometry("600x420")
+        window.resizable(False,False)
+
         #self.cliccato_var = tk.BooleanVar(value=False)
 
         #Utilizzo di grid per posizionare il frame principale
@@ -18,17 +20,20 @@ class BancomatApp():
 
 
         # Creazione dei frame che suddividono la window
-        self.frame1 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="light blue")
-        self.frame2 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="green")
-        self.frame3 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background = "pink")
-        self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background= "yellow")
+        self.frame1 = tk.Frame(master = window, background="light blue", width=600, height=20)
+        self.frame2 = tk.Frame(master = window)
+        self.frame3 = tk.Frame(master = window, background="light blue", width=600, height=20)
+        self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="light blue")
+        self.frame5 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background="green")
+        self.frame6 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background = "pink")
+        self.frame7 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1, background= "yellow")
         
 
         # Posizionamento dei frame all'interno della finestra principale
-        self.frame1.grid(row=0, column=0, padx=10, pady=10)
-        self.frame2.grid(row=1, column=1, padx=10, pady=10)
-        self.frame3.grid(row=1, column=2, padx=10, pady=10)
-        self.frame4.grid(row=1, column=3, padx=10, pady=10)
+        self.frame1.pack()
+        self.frame2.pack()
+        self.frame3.pack()
+        self.frame4.pack()
         """self.frame5.grid(row=4, column=0, padx=10, pady=10)
         self.frame6.grid(row=5, column=0, padx=10, pady=10)
         self.frame6.grid(row=6, column=0, padx=10, pady=10)"""
@@ -38,17 +43,13 @@ class BancomatApp():
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
 
+        #CONFIGURAZIONE SECONDO FRAME:
+        self.titolo = tk.Label(self.frame2, text ="Bancomat MolPol", background="light blue", width = 600, foreground="white", font=('Helvetica', 20), anchor= "center")
+        self.titolo.pack()
 
-
-        #CONFIGURAZIONE PRIMO FRAME
-        
-        
-        self.btnLoad = tk.Button(self.frame1, text="Carica Dataset", background="light blue", width=20)
+        #CONFIGURAZIONE IV FRAME
+        self.btnLoad = tk.Button(self.frame4, text="Carica Dataset", background="light blue", width=20, anchor="center")
         self.btnLoad.pack()
-
-        
-        
-        #CONFIGURAZIONE SECONDO FRAME
         
         #Label e entry per username e password
         
@@ -101,12 +102,18 @@ class BancomatApp():
         self.scopertovar = tk.StringVar()
         self.lblScoperto = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar)
         
+        self.saldo = tk.StringVar()
+        self.lblSaldo = tk.Label(self.frame4, font=('calibre',10, 'bold'))
+        self.lblCifraPrelievo = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da prelevare")
+        self.ntrCifraPrelievo = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        
+
+        
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
 
-
-        
-        
 
 
         """self.btnLimite.grid(row=0, column=0, padx=15, pady=15)
@@ -208,16 +215,13 @@ class BancomatApp():
             messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
     def prelievo(self, event):
-        self.attivazioneLogin(event)
-        if self.check_login:
-            user = self.ntrUser.get().strip()
-            psw = self.ntrPsw.get().strip()
-            if self.bancomat.preleva(user, psw):
-                messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
-            else:
-                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+        user = self.ntrUser.get().strip()
+        psw = self.ntrPsw.get().strip()
+        if self.bancomat.preleva(user, psw):
+            messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
         else:
-            messagebox.showerror("Attenzione", "Effettuare il login")
+            messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+        
     
     def trasferisci(self, event):
         self.attivazioneLogin(event)
