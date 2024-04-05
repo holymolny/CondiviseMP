@@ -22,7 +22,11 @@ class BancomatApp():
         # Creazione dei frame che suddividono la window
         self.frame1 = tk.Frame(master = window, background="light blue", width=600, height=20)
         self.frame2 = tk.Frame(master = window)
+        #Frame che gestiscono il primo blocco dedicato al caricamento del file:
         self.frame3 = tk.Frame(master = window, background="light blue", width=600, height=20)
+        self.frame31 = tk.Frame(master = window, background="white", width=600, height=20)
+        self.frame32 = tk.Frame(master = window)
+        self.frame33 = tk.Frame(master = window, background="white", width=600, height=20)
         self.frame4 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
         self.frame5 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
         self.frame6 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
@@ -33,6 +37,8 @@ class BancomatApp():
         self.frame1.pack()
         self.frame2.pack()
         self.frame3.pack()
+        self.frame31.pack()
+        self.frame32.pack()
         self.frame4.pack()
         self.frame5.pack()
         """self.frame5.grid(row=4, column=0, padx=10, pady=10)
@@ -46,6 +52,10 @@ class BancomatApp():
 
         #CONFIGURAZIONE SECONDO FRAME:
         self.titolo = tk.Label(self.frame1, text ="Bancomat MolPol", background="light blue", width = 600, foreground="white", font=('Helvetica', 20), anchor= "center")
+        self.titolo.pack()
+
+        #SCRITTA sopra pulsante dataset:
+        self.scritta1 = tk.Label(self.frame32, text ="Per prima cosa è necessario caricare un file:", font=('Helvetica', 12))
         self.titolo.pack()
 
         #CONFIGURAZIONE IV FRAME
@@ -99,7 +109,6 @@ class BancomatApp():
         #CONFIGURAZIONE QUARTO FRAME
         self.limitevar = tk.StringVar()
         self.lblLimite = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.limitevar)
-        
         self.scopertovar = tk.StringVar()
         self.lblScoperto = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.scopertovar)
         
