@@ -8,13 +8,14 @@ class BancomatApp():
     def __init__(self, root):
         self.root = root
         self.root.title("Bancomat Molpol")
-        self.root.geometry("800x600")
+        self.root.geometry("400x220")
         #self.cliccato_var = tk.BooleanVar(value=False)
 
         #Utilizzo di grid per posizionare il frame principale
         """self.frame = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.pack()"""
+
 
         # Creazione dei frame che suddividono la window
         self.frame1 = tk.Frame(self.root, relief=tk.RAISED, borderwidth=1)
@@ -31,20 +32,21 @@ class BancomatApp():
         self.root.grid_columnconfigure(0, weight=1)
 
         #Widget dentro il primo frame
+         #TITOLO:
         self.btnLoad = tk.Button(self.frame1, text="Carica Dataset")
         self.btnLoad.grid(row=0,column=0)
     
         #CONFIGURAZIONE SECONDO FRAME
         #variabili di controllo username e password
-        self.user = tk.StringVar()
-        self.psw = tk.StringVar()
+        """self.user = tk.StringVar()
+        self.psw = tk.StringVar()"""
 
         #Label e entry per username e password
         self.lblUser = tk.Label(self.frame2, text = 'Username', font=('calibre',10, 'bold'))
-        self.ntrUser = tk.Entry(self.frame2,textvariable = self.user, font=('calibre',10,'normal'))
+        self.ntrUser = tk.Entry(self.frame2, font=('calibre',10,'normal'))
 
         self.lblPsw = tk.Label(self.frame2, text = 'Password', font = ('calibre',10,'bold'))
-        self.ntrPsw = tk.Entry(self.frame2, textvariable = self.psw, font = ('calibre',10,'normal'), show = '*')
+        self.ntrPsw = tk.Entry(self.frame2, font = ('calibre',10,'normal'), show = '*')
         
         self.btnLogin = tk.Button(self.frame2, text="Login")
 
@@ -57,10 +59,10 @@ class BancomatApp():
         
 
         #CONFIGURAZIONE TERZO FRAME
-        self.btnSaldo = tk.Button(self.frame3, text="Vedi saldo")
-        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo")
-        self.btnDeposito = tk.Button(self.frame3, text="Deposita")
-        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash")
+        self.btnSaldo = tk.Button(self.frame3, text="Vedi saldo", state="disabled")
+        self.btnPrelievo = tk.Button(self.frame3, text="Prelievo", state="disabled")
+        self.btnDeposito = tk.Button(self.frame3, text="Deposita", state="disabled")
+        self.btnTransf = tk.Button(self.frame3, text="Trasferisci cash", state="disabled")
 
         #Inserimento nel grid
         self.btnSaldo.grid(row=0, column=0, padx=15, pady=15)
@@ -68,26 +70,13 @@ class BancomatApp():
         self.btnDeposito.grid(row=0, column=2, padx=15, pady=15)
         self.btnTransf.grid(row=0, column=3, padx=15, pady=15)
 
-        #Creazione oggetto Bancomat
-        #self.userAdmin = ""
-        #self.pswAdmin = ""
-        #self.btnLoad = Admin(userAdmin, pswAdmin)
-        #userAdmin, pswAdmin, filename = self.caricaDataset()
-        """systemAdmin = Admin(userAdmin, pswAdmin)"""
-        #self.bancomat = Bancomat(systemAdmin, 0, 0)
-        """bancomat.carica_da_file(userAdmin, pswAdmin, filename)"""
-        #print(bancomat)
-
-        #CAMPI DA COMPLETARE:
-        
-        #BOTTONI
-        
-        #bottone che mi permette di caricare il file.txt
-        """self.btnLoad = tk.Button(self.frame, text="Carica Dataset")
-        self.btnLoad.grid(row=2, column=2, padx=2, pady=2)"""
-
         #BINDING
-        #self.btnLoad.bind("<Button-1>", self.caricaDataset)
+        self.btnLoad.bind("<Button-1>", self.caricaDataset)
+        self.btnLogin.bind("<Button-1>", self.login)
+
+        #VARIABILI DI CONTROLLO
+        self.load = False
+        self.check_login = False
 
     #FUNZIONI
     
@@ -114,22 +103,71 @@ class BancomatApp():
                             self.bancomat = Bancomat(Admin(self.userAdmin, self.pswAdmin), 0, 0)
                             self.bancomat.carica_da_file(self.userAdmin, self.pswAdmin, filename)
                             #Cosi prende in considereazione solo il primo admin che trova
-                            return True
+                            messagebox.showinfo("Operazione riuscita", "File caricato con successo!")
+                            self.load = True
             except IOError:
-                messagebox.showerror(tk.messagebox.ERROR, "Attenzione", "Errore nel caricamento del file " + filename)
+                messagebox.showerror("Attenzione", "Errore nel caricamento del file " + filename)
                 return False 
             #return filename
         else:
             messagebox.showwarning("Attenzione", "Caricare il file in formato .txt")
             return False
+        
+    def login(self, event):
+        if self.load:
+            user = self.ntrUser.get().strip()
+            psw = self.ntrPsw.get().strip()
+            if user != "" and psw != "":
+                if self.bancomat.login(user, psw):
+                    messagebox.showinfo("Operazione riuscita", "Login effettuato con successo!")
+                    self.check_login = True
+                    #Attivo i button sotto
+                    self.btnSaldo.config(state="normal")
+                    self.btnDeposito.config(state="normal")
+                    self.btnPrelievo.config(state="normal")
+                    self.btnTransf.config(state="normal")
+                else:
+                    messagebox.showerror("Errore", "Login non effettuato. Per favore controlla le credenziali e riprova.")
+            else:
+                messagebox.showwarning("Attenzione", "Riempire i campi prima di premere sul Login")
+        else:
+            messagebox.showerror("Attenzione", "Per favore, carica il file prima di effettuare il login :)")
+    
+    #def vedi_saldo(self, event):
 
-    """ def login():
-        username = self.name_var.get()
-        password = self.password_var.get()
-        print("The name is : " + name)
-        print("The password is : " + password)
-        name_var.set("")
-        passw_var.set("")  """
+
+    def prelievo(self, event):
+        if self.check_login:
+            user = self.ntrUser.get().strip()
+            psw = self.ntrPsw.get().strip()
+            if self.bancomat.preleva(user, psw):
+                messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
+            else:
+                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+        else:
+            messagebox.showerror("Attenzione", "Effettuare il login")
+    
+    def trasferisci(self, event):
+        if self.check_login:
+            user = self.ntrUser.get().strip()
+            psw = self.ntrPsw.get().strip()
+            if self.bancomat.preleva(user, psw):
+                messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
+            else:
+                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+        else:
+            messagebox.showerror("Attenzione", "Effettuare il login")
+   
+    def deposita(self, event):    
+        if self.check_login:
+            user = self.ntrUser.get().strip()
+            psw = self.ntrPsw.get().strip()
+            if self.bancomat.deposita(user, psw):
+                messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!")
+            else:
+                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+        else:
+            messagebox.showerror("Attenzione", "Effettuare il login")
 
 window = tk.Tk()
 BancomatApp(window)
