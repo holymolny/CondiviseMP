@@ -377,7 +377,7 @@ class BancomatApp():
         #Aggiungere qui sotto quelli ancora da creare
 
     def confermaTransf(self, event):
-        somma = self.ntrCifraPrelievo.get()
+        somma = self.ntrCifraTransf.get()
         dest = self.ntrUserTransf.get()
         if somma.strip().isdigit():
             somma = int(somma)
