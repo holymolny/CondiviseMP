@@ -551,12 +551,15 @@ class Bancomat:
         if self.login(username, pin):
             #Controlli sulla somma soprattutto che sia minore del limite e che la differenza non vada sotto lo scoperto.
             if somma > 0 and somma <= self.limite_prelievo and (self.utenti[username][1] - somma) > -self.scoperto_massimo:
-                if not isinstance(self.utenti[destinatario][0], Admin):
-                    self.utenti[username] = (self.utenti[username][0], self.utenti[username][1] - somma)
-                    self.utenti[destinatario] = (self.utenti[destinatario][0], self.utenti[destinatario][1] +somma)
-                    return (True, "")
-                if isinstance(self.utenti[destinatario][0], Admin):
-                    return (False, self.UTENTE_NON_VALIDO)
+                if destinatario in self.utenti.keys():
+                    if not isinstance(self.utenti[destinatario][0], Admin):
+                        self.utenti[username] = (self.utenti[username][0], self.utenti[username][1] - somma)
+                        self.utenti[destinatario] = (self.utenti[destinatario][0], self.utenti[destinatario][1] +somma)
+                        return (True, "")
+                    if isinstance(self.utenti[destinatario][0], Admin):
+                        return (False, self.UTENTE_NON_VALIDO)
+                else:
+                    return False, self.UTENTE_NON_VALIDO
             else:
                 if self.utenti[username][1] - somma < -(self.scoperto_massimo):
                     return (False, self.FONDI_INSUFFICIENTI)
