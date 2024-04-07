@@ -266,8 +266,6 @@ class BancomatApp():
 
     def mostraLimite(self, event):
         #Attivazione dei campi per effettuare il login
-        self.user = self.ntrUser.get().strip()
-        self.psw = self.ntrPsw.get().strip()
         if self.bancomat.get_limite_prelievo(self.user, self.psw):
             #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
             self.lblScoperto.pack_forget()
@@ -284,8 +282,6 @@ class BancomatApp():
             messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
 
     def mostraScoperto(self, event):
-        self.user = self.ntrUser.get().strip()
-        self.psw = self.ntrPsw.get().strip()
         if self.bancomat.get_scoperto_massimo(self.user, self.psw):
             #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
             self.lblLimite.pack_forget()
