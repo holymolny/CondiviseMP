@@ -118,11 +118,17 @@ class BancomatApp():
         
         #PRELIEVO, TRASFERIMENTO, DEPOSITO
         self.saldovar = tk.StringVar()
-        self.sommavar = tk.IntVar()
         self.lblSaldo = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.saldovar)
         self.lblCifraPrelievo = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire somma da prelevare")
         self.ntrCifraPrelievo = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
         self.btnConfermaPrelievo = tk.Button(self.frame5, text="Preleva", background="light green", width=20, padx=10, pady=10)
+
+        self.lblCifraTransf = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire somma da trasferire")
+        self.ntrCifraTransf = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
+
+        self.lblUserTransf = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire username destinatario")
+        self.ntrUserTransf = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
+        self.btnConfermaTransf = tk.Button(self.frame5, text="Invia denaro", background="light green", width=20, padx=10, pady=10)
 
         self.lblCifraDeposito = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire somma da depositare")
         self.ntrCifraDeposito = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
@@ -143,12 +149,14 @@ class BancomatApp():
         self.ntrCifraDeposito.pack_forget()
         self.btnConfermaDeposito.pack_forget()
 
+        #TRASFERIMENTO
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
 
-        """self.btnLimite.grid(row=0, column=0, padx=15, pady=15)
-        self.btnScoperto.grid(row=0, column=1, padx=15, pady=15)
-        self.btnPrelievo.grid(row=0, column=2, padx=15, pady=15)
-        self.btnDeposito.grid(row=0, column=3, padx=15, pady=15)
-        self.btnTransf.grid(row=0, column=4, padx=15, pady=15)"""
+
 
         #BINDING
         #Caricamento del file da cui caricare il bancomat 
@@ -164,7 +172,7 @@ class BancomatApp():
         #Conferma delle operazioni
         self.btnConfermaPrelievo.bind("<Button-1>", self.confermaPrelievo)
         self.btnConfermaDeposito.bind("<Button-1>", self.confermaDeposito)
-
+        self.btnConfermaTransf.bind("<Button-1>", self.confermaTransf)
         #VARIABILI DI CONTROLLO
         self.load = False
         self.check_login = False
@@ -290,6 +298,11 @@ class BancomatApp():
         self.lblCifraDeposito.pack_forget()
         self.ntrCifraDeposito.pack_forget()
         self.btnConfermaDeposito.pack_forget()
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
         #Aggiungere qui sotto quelli ancora da creare
 
 
@@ -312,13 +325,36 @@ class BancomatApp():
     
     
     def attivaTransf(self, event):
-        if self.check_login:
-            self.user = self.ntrUser.get().strip()
-            self.psw = self.ntrPsw.get().strip()
+        if self.bancomat.get_saldo(self.user, self.psw):
+            self.lblSaldo.pack(side = tk.TOP)
+            self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
             if self.bancomat.get_saldo(self.user, self.psw):
                 self.lblSaldo.pack(side = tk.TOP)
                 self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
-            self.lbl
+            self.lblCifraTransf.pack(side = tk.TOP)
+            self.ntrCifraTransf.pack(side = tk.TOP)
+            self.lblUserTransf.pack(side = tk.TOP)
+            self.ntrUserTransf.pack(side = tk.TOP)
+            self.btnConfermaTransf.pack(side = tk.TOP)
+
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+            self.lblLimite.pack_forget()
+            self.lblScoperto.pack_forget()
+            self.lblCifraDeposito.pack_forget()
+            self.ntrCifraDeposito.pack_forget()
+            self.btnConfermaDeposito.pack_forget()
+            self.lblCifraPrelievo.pack_forget()
+            self.ntrCifraPrelievo.pack_forget()
+            self.btnConfermaPrelievo.pack_forget()
+            #Aggiungere qui sotto quelli ancora da creare
+
+    def confermaTransf(self, event):
+        somma = self.ntrCifraPrelievo.get()
+        dest = self.ntrUserTransf.get()
+        if somma.strip.isdigit()
+
+
+
 
     def attivaDeposito(self, event):
         if self.bancomat.get_saldo(self.user, self.psw):
@@ -334,6 +370,11 @@ class BancomatApp():
         self.lblCifraPrelievo.pack_forget()
         self.ntrCifraPrelievo.pack_forget()
         self.btnConfermaPrelievo.pack_forget()
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
         #Aggiungere qui sotto quelli ancora da creare
    
     def confermaDeposito(self, event): 
