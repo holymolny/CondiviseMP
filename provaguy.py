@@ -116,6 +116,7 @@ class BancomatApp():
         self.scopertovar = tk.StringVar()
         self.lblScoperto = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.scopertovar)
         
+        #PRELIEVO, TRASFERIMENTO, DEPOSITO
         self.saldovar = tk.StringVar()
         self.sommavar = tk.IntVar()
         self.lblSaldo = tk.Label(self.frame5, font=('calibre',10, 'bold'), textvariable=self.saldovar)
@@ -123,6 +124,10 @@ class BancomatApp():
         self.ntrCifraPrelievo = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
         self.btnConfermaPrelievo = tk.Button(self.frame5, text="Preleva", background="light green", width=20, padx=10, pady=10)
 
+        self.lblCifraDeposito = tk.Label(self.frame5, font=('calibre',10, 'bold'), text="Inserire somma da depositare")
+        self.ntrCifraDeposito = tk.Entry(self.frame5, font=('calibre',10, 'bold'))
+        self.btnConfermaDeposito = tk.Button(self.frame5, text="Deposita", background="light green", width=20, padx=10, pady=10)
+        
         #MOSTRA LIMITE E SCOPERTO
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
@@ -133,6 +138,11 @@ class BancomatApp():
         self.ntrCifraPrelievo.pack_forget()
         self.btnConfermaPrelievo.pack_forget()
 
+        #DEPOSITO
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+
 
         """self.btnLimite.grid(row=0, column=0, padx=15, pady=15)
         self.btnScoperto.grid(row=0, column=1, padx=15, pady=15)
@@ -141,13 +151,17 @@ class BancomatApp():
         self.btnTransf.grid(row=0, column=4, padx=15, pady=15)"""
 
         #BINDING
+        #Caricamento del file da cui caricare il bancomat 
         self.btnLoad.bind("<Button-1>", self.caricaDataset)
+        #Attivazione dei button delle operazioni eseguibili
         self.btnLimite.bind("<Button-1>", self.mostraLimite)
         self.btnScoperto.bind("<Button-1>", self.mostraScoperto)
         self.btnPrelievo.bind("<Button-1>", self.attivaPrelievo)
-        self.btnDeposito.bind("<Button-1>", self.deposita)
+        self.btnDeposito.bind("<Button-1>", self.confermaDeposito)
         self.btnTransf.bind("<Button-1>", self.attivaTransf)
+        #Conferma login
         self.btnLogin.bind("<Button-1>", self.login)
+        #Conferma delle operazioni
         self.btnConfermaPrelievo.bind("<Button-1>", self.confermaPrelievo)
         
 
@@ -261,8 +275,6 @@ class BancomatApp():
             messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
 
     def attivaPrelievo(self, event):
-        self.user = self.ntrUser.get().strip()
-        self.psw = self.ntrPsw.get().strip()
         #Rendo visibile i campi per fare il prelievo
         if self.bancomat.get_saldo(self.user, self.psw):
             self.lblSaldo.pack(side = tk.TOP)
@@ -279,42 +291,64 @@ class BancomatApp():
 
 
     def confermaPrelievo(self, event):
-        somma = int(self.ntrCifraPrelievo.get())
-        if somma != "":
+        somma = self.ntrCifraPrelievo.get()
+        if somma.strip() == "":
+            somma = int(self.ntrCifraDeposito.get())
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
-                operazione, msg = self.bancomat.preleva(self.user, self.psw, somma)
-                if operazione:
+                esito, msg = self.bancomat.preleva(self.user, self.psw, somma)
+                if esito:
                     messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
+                    if self.bancomat.get_saldo(self.user, self.psw):
+                        self.lblSaldo.pack(side = tk.TOP)
+                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
                 else:
-                     messagebox.showwarning("Attenzione", msg)
+                    messagebox.showwarning("Attenzione", msg)
         else:
             messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e riprova.")
     
     
     def attivaTransf(self, event):
-        self.attivazioneLogin(event)
         if self.check_login:
             self.user = self.ntrUser.get().strip()
             self.psw = self.ntrPsw.get().strip()
-            if self.bancomat.preleva(self.user, self.psw):
-                messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
-            else:
-                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
-        else:
-            messagebox.showerror("Attenzione", "Effettuare il login")
+            if self.bancomat.get_saldo(self.user, self.psw):
+                self.lblSaldo.pack(side = tk.TOP)
+                self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+            self.lbl
+
+    def attivaDeposito(self, event):
+        if self.bancomat.get_saldo(self.user, self.psw):
+            self.lblSaldo.pack(side = tk.TOP)
+            self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+        self.lblCifraDeposito.pack(side = tk.TOP)
+        self.ntrCifraDeposito.pack(side = tk.TOP)
+        self.btnConfermaDeposito.pack(side = tk.TOP)
+
+        #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
+        self.btnConfermaPrelievo.pack_forget()
+        #Aggiungere qui sotto quelli ancora da creare
    
-    def deposita(self, event): 
-        self.attivazioneLogin(event)   
-        if self.check_login:
-            user = self.ntrUser.get().strip()
-            psw = self.ntrPsw.get().strip()
-            if self.bancomat.deposita(user, psw):
-                messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!")
-            else:
-                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+    def confermaDeposito(self, event): 
+        somma = self.ntrCifraDeposito.get()
+        if somma != "":
+            somma = int(self.ntrCifraDeposito.get())
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
+            if risposta:
+                esito, msg = self.bancomat.deposita(self.user, self.psw, somma)
+                if esito:
+                    messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!")
+                    if self.bancomat.get_saldo(self.user, self.psw):
+                        self.lblSaldo.pack(side = tk.TOP)
+                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+                else:
+                    messagebox.showwarning("Attenzione", msg)
         else:
-            messagebox.showerror("Attenzione", "Effettuare il login")
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e riprova.")
 
 window = tk.Tk()
 BancomatApp(window)
