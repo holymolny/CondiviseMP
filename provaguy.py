@@ -284,12 +284,16 @@ class BancomatApp():
 
     def attivaPrelievo(self, event):
         #Rendo visibile i campi per fare il prelievo
-        if self.bancomat.get_saldo(self.user, self.psw):
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
+        else:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
-        self.lblCifraPrelievo.pack(side = tk.TOP)
-        self.ntrCifraPrelievo.pack(side = tk.TOP)
-        self.btnConfermaPrelievo.pack(side = tk.TOP)
+            
+            self.lblCifraPrelievo.pack(side = tk.TOP)
+            self.ntrCifraPrelievo.pack(side = tk.TOP)
+            self.btnConfermaPrelievo.pack(side = tk.TOP)
 
         
         #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
@@ -309,11 +313,12 @@ class BancomatApp():
     def confermaPrelievo(self, event):
         somma = self.ntrCifraPrelievo.get()
         if somma.strip().isdigit():
-            somma = int(self.ntrCifraDeposito.get())
+            somma = int(somma)
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
                 esito, msg = self.bancomat.preleva(self.user, self.psw, somma)
                 if esito:
+                    self.bancomat.salva_su_file()
                     messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
                     if self.bancomat.get_saldo(self.user, self.psw):
                         self.lblSaldo.pack(side = tk.TOP)
@@ -325,7 +330,10 @@ class BancomatApp():
     
     
     def attivaTransf(self, event):
-        if self.bancomat.get_saldo(self.user, self.psw):
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
+        else:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
             if self.bancomat.get_saldo(self.user, self.psw):
@@ -338,31 +346,45 @@ class BancomatApp():
             self.btnConfermaTransf.pack(side = tk.TOP)
 
             #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
-            self.lblLimite.pack_forget()
-            self.lblScoperto.pack_forget()
-            self.lblCifraDeposito.pack_forget()
-            self.ntrCifraDeposito.pack_forget()
-            self.btnConfermaDeposito.pack_forget()
-            self.lblCifraPrelievo.pack_forget()
-            self.ntrCifraPrelievo.pack_forget()
-            self.btnConfermaPrelievo.pack_forget()
-            #Aggiungere qui sotto quelli ancora da creare
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
+        self.btnConfermaPrelievo.pack_forget()
+        #Aggiungere qui sotto quelli ancora da creare
 
     def confermaTransf(self, event):
         somma = self.ntrCifraPrelievo.get()
         dest = self.ntrUserTransf.get()
-        if somma.strip.isdigit()
-
-
-
+        if somma.strip().isdigit():
+            somma = int(somma)
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
+            if risposta:
+                esito, msg = self.bancomat.trasferisci(self.user, self.psw, dest, somma)
+                if esito:
+                    messagebox.showinfo("Operazione riuscita", "Denaro trasferito sul conto di " + dest)
+                    if self.bancomat.get_saldo(self.user, self.psw):
+                        self.lblSaldo.pack(side = tk.TOP)
+                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+                else:
+                    messagebox.showwarning("Attenzione", msg)
+        else:
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e lo username del destinatario e riprova.")
+    
 
     def attivaDeposito(self, event):
-        if self.bancomat.get_saldo(self.user, self.psw):
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
+        else:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
-        self.lblCifraDeposito.pack(side = tk.TOP)
-        self.ntrCifraDeposito.pack(side = tk.TOP)
-        self.btnConfermaDeposito.pack(side = tk.TOP)
+            self.lblCifraDeposito.pack(side = tk.TOP)
+            self.ntrCifraDeposito.pack(side = tk.TOP)
+            self.btnConfermaDeposito.pack(side = tk.TOP)
 
         #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
         self.lblLimite.pack_forget()
