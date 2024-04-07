@@ -17,12 +17,13 @@ class BancomatApp():
         #FRAME CARICA-DATASET
         self.frame2 = tk.Frame(master=window)
         self.frame2.pack()
-        #FRAME SPAZIO
+        #FRAME LOGIN
         self.frame3 = tk.Frame(master=window)
         self.frame3.pack()
-        #FRAME LOGIN
+        #FRAME BOTTONI-OPERAZIONI
         self.frame4 = tk.Frame(master=window)
         self.frame4.pack()
+
 
         #TITOLO
         self.titolo = tk.Label(self.frame1, text ="Bancomat MolPol", background="light blue", width = 500, foreground="white", font=('Helvetica', 20), anchor= "center")
@@ -48,21 +49,40 @@ class BancomatApp():
         self.ntrPsw.pack(anchor='center')
         self.btnLogin.pack(anchor='center', pady=10)
 
-        #OPERAZIONI ESEGUIBILI DAL CLIENTE
-
         #VARIABILI LOGIN del cliente
         self.user = tk.StringVar()
         self.psw = tk.StringVar()
+
+        #OPERAZIONI ESEGUIBILI DAL CLIENTE
+        self.info3 = tk.Label(self.frame4, text= "Scegliere una delle seguenti operazioni:", foreground="black", font=('Helvetica', 10), width=500)
+        self.btnLimite = tk.Button(self.frame4, text="Limite Prelievo", background="light blue", width=20, pady=5, state="disabled")
+        self.btnScoperto = tk.Button(self.frame4, text="Scoperto", background="light blue", width=20, pady=5, state="disabled")
+        self.btnPrelievo = tk.Button(self.frame4, text="Prelievo", background="light blue", width=20, pady=5, state="disabled")
+        self.btnDeposito = tk.Button(self.frame4, text="Deposita", background="light blue", width=20, pady=5, state="disabled")
+        self.btnTransf = tk.Button(self.frame4, text="Trasferisci cash", background="light blue", width=20, pady=5, state="disabled")
+        self.info3.pack(anchor= "center")
+        self.btnLimite.pack(anchor= "center")
+        self.btnScoperto.pack(anchor= "center")
+        self.btnPrelievo.pack(anchor= "center")
+        self.btnDeposito.pack(anchor= "center")
+        self.btnTransf.pack(anchor= "center")
+
+        #LIMITE E SCOPERTO
+        self.limitevar = tk.StringVar()
+        self.lblLimite = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar, pady = 10, foreground="green")
+        self.scopertovar = tk.StringVar()
+        self.lblScoperto = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.scopertovar, pady=10, foreground="green")
+        #MOSTRA LIMITE E SCOPERTO
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
 
         #BINDING
         self.btnLoad.bind("<Button-1>", self.caricaDataset)
         #login
         self.btnLogin.bind("<Button-1>", self.login)
-
-        #VARIABILI DI CONTROLLO
-        self.load = False
-        self.check_login = False
-
+        #mostralimite e scoperto
+        self.btnLimite.bind("<Button-1>", self.mostraLimite)
+        self.btnScoperto.bind("<Button-1>", self.mostraScoperto)
 
 #FUNZIONI
 #____________________________________________________________________________________________________
@@ -120,13 +140,52 @@ class BancomatApp():
             if self.bancomat.login(self.user, self.psw):
                 messagebox.showinfo("Operazione riuscita", "Login effettuato! Adesso hai accesso alle operazioni del bancomat!")
                 #Attivazione dei bottoni per le operazioni
-                """ self.btnLimite.config(state="normal")
+                self.btnLimite.config(state="normal")
                 self.btnScoperto.config(state="normal")
                 self.btnDeposito.config(state="normal")
                 self.btnPrelievo.config(state="normal")
-                self.btnTransf.config(state="normal")"""
+                self.btnTransf.config(state="normal")
             else:
                 messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
+
+#MOSTRA LIMITE E SCOPERTO
+#_________________________________________________________________________________________________________________________
+    def mostraLimite(self, event):
+        #Attivazione dei campi per effettuare il login
+        self.user = self.ntrUser.get().strip()
+        self.psw = self.ntrPsw.get().strip()
+        if self.bancomat.get_limite_prelievo(self.user, self.psw):
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+            self.lblScoperto.pack_forget()
+            """self.lblSaldo.pack_forget()
+            self.lblCifraPrelievo.pack_forget()
+            self.ntrCifraPrelievo.pack_forget()
+            self.btnConfermaPrelievo.pack_forget()"""
+            #Aggiungere qui sotto quelli ancora da creare
+
+            #Rendo visibile solo quello che mostra il limite di prelievo
+            self.lblLimite.pack(side = tk.TOP)
+            self.limitevar.set("Limite prelievo: " + str(self.bancomat.get_limite_prelievo(self.user, self.psw)))
+        else:
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
+
+    def mostraScoperto(self, event):
+        self.user = self.ntrUser.get().strip()
+        self.psw = self.ntrPsw.get().strip()
+        if self.bancomat.get_scoperto_massimo(self.user, self.psw):
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+            self.lblLimite.pack_forget()
+            """self.lblSaldo.pack_forget()
+            self.lblCifraPrelievo.pack_forget()
+            self.ntrCifraPrelievo.pack_forget()
+            self.btnConfermaPrelievo.pack_forget()"""
+            #Aggiungere qui sotto quelli ancora da creare
+
+            #Rendo visibile solo quello che mostra lo scoperto
+            self.lblScoperto.pack(side = tk.TOP)
+            self.scopertovar.set("Scoperto massimo: " + str(self.bancomat.get_scoperto_massimo(self.user, self.psw)))
+        else:
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
 
 window = tk.Tk()
 BancomatApp(window)
