@@ -190,6 +190,7 @@ class BancomatApp():
         indicePunto = filename.rfind(".") 
         estensione = filename[indicePunto + 1:]
         if estensione == "txt":
+            self.filename = filename
             try:
             #carico il file in lettura e prendo solo User e Psw dell'ADMIN e filename 
                 with open(filename, "r") as file:
@@ -228,6 +229,24 @@ class BancomatApp():
             messagebox.showwarning("Attenzione", "Caricare il file in formato .txt")
             return False
         
+
+    def disabilitaOperazioni(self):
+        #Azzero le variabili di login
+        self.user = tk.StringVar()
+        self.psw = tk.StringVar()
+        #Cancella i valori delle entry di Login
+        #Elimina tutto il contenuto della entry
+        self.ntrUser.delete(0, tk.END)
+        self.ntrPsw.delete(0, tk.END)
+
+        #Disabilita i button
+        self.btnLimite.config(state="disabled")
+        self.btnScoperto.config(state="disabled")
+        self.btnDeposito.config(state="disabled")
+        self.btnPrelievo.config(state="disabled")
+        self.btnTransf.config(state="disabled")
+
+
     def login(self, event):
         self.user = self.ntrUser.get().strip()
         self.psw = self.ntrPsw.get().strip()
@@ -318,11 +337,16 @@ class BancomatApp():
             if risposta:
                 esito, msg = self.bancomat.preleva(self.user, self.psw, somma)
                 if esito:
-                    self.bancomat.salva_su_file()
-                    messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
-                    if self.bancomat.get_saldo(self.user, self.psw):
-                        self.lblSaldo.pack(side = tk.TOP)
-                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()
+                    self.lblCifraPrelievo.pack_forget()
+                    self.ntrCifraPrelievo.pack_forget()
+                    self.btnConfermaPrelievo.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
                 else:
                     messagebox.showwarning("Attenzione", msg)
         else:
@@ -365,10 +389,18 @@ class BancomatApp():
             if risposta:
                 esito, msg = self.bancomat.trasferisci(self.user, self.psw, dest, somma)
                 if esito:
-                    messagebox.showinfo("Operazione riuscita", "Denaro trasferito sul conto di " + dest)
-                    if self.bancomat.get_saldo(self.user, self.psw):
-                        self.lblSaldo.pack(side = tk.TOP)
-                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro trasferito sul conto di " + dest +"\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()                    
+                    self.lblCifraTransf.pack_forget()
+                    self.ntrCifraTransf.pack_forget()
+                    self.lblUserTransf.pack_forget()
+                    self.ntrUserTransf.pack_forget()
+                    self.btnConfermaTransf.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
                 else:
                     messagebox.showwarning("Attenzione", msg)
         else:
@@ -407,10 +439,16 @@ class BancomatApp():
             if risposta:
                 esito, msg = self.bancomat.deposita(self.user, self.psw, somma)
                 if esito:
-                    messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!")
-                    if self.bancomat.get_saldo(self.user, self.psw):
-                        self.lblSaldo.pack(side = tk.TOP)
-                        self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()
+                    self.lblCifraDeposito.pack_forget()
+                    self.ntrCifraDeposito.pack_forget()
+                    self.btnConfermaDeposito.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
                 else:
                     messagebox.showwarning("Attenzione", msg)
         else:
