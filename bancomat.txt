@@ -1,8 +1,8 @@
 Scoperto massimo: 500
 Limite prelievo: 1000
 Admin: admin1 admin123 0
-Cliente: cl2 123456 Lucia Bianchi 0
+Cliente: cl2 123456 Lucia Bianchi 100
 Cliente: cl3 111111 Giovanni Verdi 1500
 Cliente: cl4 222222 Anna Neri 2500
 Admin: admin2 admin123 0
-Cliente: cl1 123456 Mario Rossi 2150
+Cliente: cl1 123456 Mario Rossi 2900
