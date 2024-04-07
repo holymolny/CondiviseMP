@@ -157,13 +157,13 @@ class BancomatApp():
         self.btnLimite.bind("<Button-1>", self.mostraLimite)
         self.btnScoperto.bind("<Button-1>", self.mostraScoperto)
         self.btnPrelievo.bind("<Button-1>", self.attivaPrelievo)
-        self.btnDeposito.bind("<Button-1>", self.confermaDeposito)
+        self.btnDeposito.bind("<Button-1>", self.attivaDeposito)
         self.btnTransf.bind("<Button-1>", self.attivaTransf)
         #Conferma login
         self.btnLogin.bind("<Button-1>", self.login)
         #Conferma delle operazioni
         self.btnConfermaPrelievo.bind("<Button-1>", self.confermaPrelievo)
-        
+        self.btnConfermaDeposito.bind("<Button-1>", self.confermaDeposito)
 
         #VARIABILI DI CONTROLLO
         self.load = False
@@ -287,12 +287,15 @@ class BancomatApp():
         #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
         #Aggiungere qui sotto quelli ancora da creare
 
 
     def confermaPrelievo(self, event):
         somma = self.ntrCifraPrelievo.get()
-        if somma.strip() == "":
+        if somma.strip().isdigit():
             somma = int(self.ntrCifraDeposito.get())
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
@@ -335,7 +338,7 @@ class BancomatApp():
    
     def confermaDeposito(self, event): 
         somma = self.ntrCifraDeposito.get()
-        if somma != "":
+        if somma.strip().isdigit():
             somma = int(self.ntrCifraDeposito.get())
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
