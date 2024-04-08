@@ -8,7 +8,7 @@ class BancomatApp():
     def __init__(self, root):
         self.root = root
         self.root.title("Bancomat Molpol")
-        self.root.geometry("500x580")
+        self.root.geometry("500x600")
         window.resizable(False,False)
     
     #GESTIONE FRAME
@@ -75,7 +75,6 @@ class BancomatApp():
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
 
-        #PRELIEVO, DEPOSITO, TRASFERIMENTO
         #PRELIEVO, TRASFERIMENTO, DEPOSITO
         self.saldovar = tk.StringVar()
         self.lblSaldo = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.saldovar, pady=10, foreground="green")
@@ -93,6 +92,9 @@ class BancomatApp():
         self.lblCifraDeposito = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da depositare")
         self.ntrCifraDeposito = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
         self.btnConfermaDeposito = tk.Button(self.frame4, text="Deposita", background="light blue", width=20, pady=15)
+        #LOGOUT
+        self.btnLogout = tk.Button(self.frame3, text="Esci", background="red", foreground="white", width=20, pady=20, padx=20)
+        
         #PRELIEVO
         self.lblSaldo.pack_forget()
         self.lblCifraPrelievo.pack_forget()
@@ -108,6 +110,10 @@ class BancomatApp():
         self.lblUserTransf.pack_forget()
         self.ntrUserTransf.pack_forget()
         self.btnConfermaTransf.pack_forget()
+        #LOGOUT
+        self.btnLogout.pack_forget()
+
+        
 
 
         #BINDING
@@ -125,6 +131,8 @@ class BancomatApp():
         self.btnConfermaPrelievo.bind("<Button-1>", self.confermaPrelievo)
         self.btnConfermaDeposito.bind("<Button-1>", self.confermaDeposito)
         self.btnConfermaTransf.bind("<Button-1>", self.confermaTransf)
+        #Uscita
+        self.btnLogout.bind("<Button-1>", self.logout)
 
 #FUNZIONI
 #____________________________________________________________________________________________________
@@ -181,7 +189,8 @@ class BancomatApp():
             self.user = self.ntrUser.get().strip()
             self.psw = self.ntrPsw.get().strip()
             #Se il login va a buon fine
-            if self.bancomat.login(self.user, self.psw):
+            loggato = self.bancomat.login(self.user, self.psw)
+            if loggato:
                 messagebox.showinfo("Operazione riuscita", "Login effettuato! Adesso hai accesso alle operazioni del bancomat!")
                 #Attivazione dei bottoni per le operazioni
                 self.btnLimite.config(state="normal")
@@ -189,6 +198,14 @@ class BancomatApp():
                 self.btnDeposito.config(state="normal")
                 self.btnPrelievo.config(state="normal")
                 self.btnTransf.config(state="normal")
+
+                #Disattivo il login
+                self.btnLogout.pack(anchor="center")
+                self.btnLogin.pack_forget()
+                self.lblUser.pack_forget()
+                self.ntrUser.pack_forget()
+                self.lblPsw.pack_forget()
+                self.ntrPsw.pack_forget()
             else:
                 messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
 
@@ -209,6 +226,16 @@ class BancomatApp():
         self.btnDeposito.config(state="disabled")
         self.btnPrelievo.config(state="disabled")
         self.btnTransf.config(state="disabled")
+
+        #Mostra tutti i campi del login
+        self.lblUser.pack()
+        self.ntrUser.pack()
+        self.lblPsw.pack()
+        self.ntrPsw.pack()
+        self.btnLogin.pack()
+
+        #Nasconde il button di logout
+        self.btnLogout.pack_forget()
 
 #4 MOSTRA LIMITE E SCOPERTO
 #________________________________________________________________________________________________________________________
@@ -403,6 +430,16 @@ class BancomatApp():
                     messagebox.showwarning("Attenzione", msg)
         else:
             messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e riprova.")
+
+
+
+    def logout(self, event):
+        #Disabilita le operazioni
+        self.disabilitaOperazioni()
+
+        
+
+
 
 window = tk.Tk()
 BancomatApp(window)
