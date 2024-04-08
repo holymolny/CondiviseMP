@@ -224,7 +224,7 @@ class BancomatApp():
         self.psw = tk.StringVar()
 
         #Cancella i valori delle entry di Login
-        #Elimina tutto il contenuto della entry ----------------- ???????????????????
+        #Elimina tutto il contenuto della entry
         self.ntrUser.delete(0, tk.END)
         self.ntrPsw.delete(0, tk.END)
 
