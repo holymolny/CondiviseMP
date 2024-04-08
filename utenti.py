@@ -19,6 +19,8 @@ import re
 
 #Classe Utente
 class Utente:
+
+    #COSTRUTTORE
     def __init__(self, initUser):
         if not isinstance(initUser, str):
             raise TypeError("Lo username deve essere una stringa")
@@ -27,20 +29,23 @@ class Utente:
     def get_username(self):
         return self.username
 
+    #Metodo per settare le variabili
     def set_username(self, newUser):
         if not isinstance(newUser, str):
             raise TypeError("Lo username deve essere una stringa")
         self.username = newUser
 
+    #Rappresentazione di Utente
     def __repr__(self):
         return "Utente = " + str(self.username)
 
+    #Verifico che sia istanza di utente
     def __eq__(self, otherUtente):
         if isinstance(otherUtente, Utente):
             return self.username == otherUtente.username
         return False
 
-#Classe Cliente
+#Classe Cliente - Sottoclasse di utente
 class Cliente(Utente):
     def __init__(self, initUser, initPin, initNome, initCognome):
         #Eredita username dalla superclasse Utente
@@ -51,6 +56,7 @@ class Cliente(Utente):
         if not isinstance(initPin, str): 
             raise TypeError("Il pin deve essere una stringa di numeri")
         else:
+            #Verifico che il pin sia composto da 6 numeri
             if not re.match(r'^\d{6}$', initPin) or initPin.isalpha():
                 raise ValueError("Il pin deve essere composto da 6 cifre")
         self.pin = initPin
@@ -134,6 +140,7 @@ class Admin(Utente):
         #Controllo su password
         if not isinstance(newPassword, str):
             raise TypeError
+        #espressione regolare che conrolla che ci sia almeno una lettera e almeno un numero
         elif not re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', newPassword):
             raise ValueError("La password deve contenere almeno un carattere e almeno una cifra")
         self.password = newPassword
