@@ -81,14 +81,14 @@ except ValueError:
 try:
     Cliente("clxy", 123456, "Mario12", "Rossi")
     errori += 1
-    print(f"Test {4}: Failed")
+    print(f"Test {400}: Failed")
 except TypeError:
     pass
 
 try:
     Cliente("cly", 123456, "Mario", "15Rossi")
     errori += 1
-    print(f"Test {4}: Failed")
+    print(f"Test {401}: Failed")
 except TypeError:
     pass
 
@@ -118,15 +118,9 @@ errori += testEqual(19, bancomat.get_lista_utenti("admin1", "admin123"), [mainAd
 errori += testEqual(20, bancomat.login("admin1", "admin123",True), True)
 errori += testEqual(21, bancomat.login("admin1", "admin2",True), False)
 
-#############################################CHIEDERE AL PROF#####################################################
-"""errori += testEqual(22, bancomat.login("admin1", "admin123",False), True)"""
-#Secondo me stampa il valore corretto che è questo
-#print(bancomat.login("admin1", "admin123",False))
-##################################################################################################################
-
 
 #Test login clienti
-try: #genera eccezione perchè la psw deve contenere almeno un char
+try: 
     errori += testEqual(23, bancomat.modifica_pin("admin1", "admin123", "123456"), False) 
     print(f"Test {4}: Failed")
 except ValueError:

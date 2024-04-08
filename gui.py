@@ -18,220 +18,163 @@ L’aspetto generale dell’interfaccia grafica `e lasciato alla creativit`a del
 from bancomat import *
 from utenti import *
 import tkinter as tk
+#mi serve per generare i messaggi
 from tkinter import messagebox
+#mi serve per caricare file dal pc 
 from tkinter import filedialog
 
 class BancomatApp():
+    #Costruttore
     def __init__(self, root):
         self.root = root
         self.root.title("Bancomat Molpol")
-        self.root.geometry("600x850")
+        self.root.geometry("500x600")
         window.resizable(False,False)
-        root.configure(background="white")
     
-    # Creazione dei frame che suddividono la window
-        self.frame1 = tk.Frame(master = window, background="light blue", width=600, height=20)
-        self.frame2 = tk.Frame(master = window)
-        self.frame3 = tk.Frame(master = window, background="light blue", width=600, height=20)
-        self.frame4 = tk.Frame(master = window, background="white", width=600, height=20)
-        self.frame5 = tk.Frame(master = window)
-        self.frame6 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame7 = tk.Frame(master=window)
-        self.frame8 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame9 = tk.Frame(master=window)
-        self.frame10 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame11 = tk.Frame(master=window)
-        self.frame12 = tk.Frame(master=window)
-        self.frame13 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame14 = tk.Frame(master=window)
-        self.frame15 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame16 = tk.Frame(master=window)
-        self.frame17 = tk.Frame(master=window)
-        self.frame18 = tk.Frame(master = window, background="white", width= 600, height= 5)
-        self.frame19 = tk.Frame(master=window)
-        self.frame20 = tk.Frame(master=window)
-        self.frame21 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame22 = tk.Frame(master=window)
-        self.frame23 = tk.Frame(master=window)
-        self.frame24 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame25 = tk.Frame(master=window)
-        self.frame26 = tk.Frame(master=window)
-        self.frame27 = tk.Frame(master=window)
-        self.frame28 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame29 = tk.Frame(master=window)
-        self.frame30 = tk.Frame(master=window)
-        self.frame31 = tk.Frame(master=window)
-        self.frame32 = tk.Frame(master=window)
-        self.frame33 = tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame34 = tk.Frame(master=window)
-        self.frame35 =tk.Frame(master = window, background="white", width= 600, height= 10)
-        self.frame36 = tk.Frame(master = window, background="light blue", width=600, height=80)
-    # Posizionamento dei frame all'interno della finestra principale
+    #GESTIONE FRAME
+        self.frame1 = tk.Frame(master = window)
         self.frame1.pack()
+        #FRAME CARICA-DATASET
+        self.frame2 = tk.Frame(master=window)
         self.frame2.pack()
+        #FRAME LOGIN
+        self.frame3 = tk.Frame(master=window)
         self.frame3.pack()
+        #FRAME BOTTONI-OPERAZIONI
+        self.frame4 = tk.Frame(master=window)
         self.frame4.pack()
+        #FRAME CREDITS
+        self.frame5 = tk.Frame(master = window)
         self.frame5.pack()
-        self.frame6.pack()
-        self.frame7.pack()
-        self.frame8.pack()
-        self.frame9.pack()
-        self.frame10.pack()
-        self.frame11.pack()
-        self.frame12.pack()
-        self.frame13.pack()
-        self.frame14.pack()
-        self.frame15.pack()
-        self.frame16.pack()
-        self.frame17.pack()
-        self.frame18.pack()
-        self.frame19.pack()
-        self.frame20.pack()
-        self.frame21.pack()
-        self.frame22.pack()
-        self.frame23.pack()
-        self.frame24.pack()
-        self.frame25.pack() 
-        self.frame26.pack()
-        self.frame27.pack()
-        self.frame28.pack()
-        self.frame29.pack() 
-        self.frame30.pack()
-        self.frame31.pack()  
-        self.frame32.pack()
-        self.frame33.pack() 
-        self.frame34.pack() 
-        self.frame35.pack()
-        self.frame36.pack()
-    
+      
         #TITOLO
-        self.titolo = tk.Label(
-            self.frame2,
-            text ="Bancomat MolPol",
-            background="light blue",
-            width = 600,
-            foreground="white",
-            font=('Helvetica', 20),
-            anchor= "center"
-            )
+        self.titolo = tk.Label(self.frame1, text ="Bancomat MolPol", background="light blue", width = 500, foreground="white", font=('Helvetica', 20), anchor= "center")
         self.titolo.pack()
 
-        #TESTO PRIMA DI CARICA DATASET
-        self.testo1 = tk.Label(self.frame5, text="Selezionare un file.txt da caricare:", background="white", font=('Helvetica', 10))
-        self.testo1.pack()
+        #CARICA DATASET
+        self.info1 = tk.Label(self.frame2, text = "Per prima cosa è necessario caricare un Dataset:", foreground="black", font=('Helvetica', 10), anchor="center", width=500)
+        self.info1.pack(side = tk.TOP)
+        self.btnLoad = tk.Button(self.frame2, text="Carica Dataset", background="light blue", width=30, anchor="center")
+        self.btnLoad.pack(side = tk.BOTTOM)
 
-        #BOTTONE CARICA DATASET
-        self.btnLoad = tk.Button(self.frame7, text="Carica Dataset", background="light blue", width=20, anchor="center")
-        self.btnLoad.pack()
+        #LOGIN
+        self.info2 = tk.Label(self.frame3, text = "Per poter svolgere le operazioni sottostanti eseguire il login:", foreground="black", font=('Helvetica', 10), width=500)
+        self.lblUser = tk.Label(self.frame3, text='Username', font=('calibre', 10, 'bold'), state="disabled")
+        self.ntrUser = tk.Entry(self.frame3, font=('calibre', 10, 'normal'), state="disabled")
+        self.lblPsw = tk.Label(self.frame3, text='Password', font=('calibre', 10, 'bold'), state="disabled")
+        self.ntrPsw = tk.Entry(self.frame3, font=('calibre', 10, 'normal'), show='*', state="disabled")
+        self.btnLogin = tk.Button(self.frame3, text="Login", state="disabled", background="light blue", width=18)
+        self.info2.pack(anchor='center')
+        self.lblUser.pack(anchor='center')
+        self.ntrUser.pack(anchor='center')
+        self.lblPsw.pack(anchor='center')
+        self.ntrPsw.pack(anchor='center')
+        self.btnLogin.pack(anchor='center', pady=10)
 
-        #AREA AUTENTICAZIONE
-        #----------------------------------------------------------------------------------------------------------------
-        self.testo2 = tk.Label(self.frame9, text="Prima di eseguire ogni operazione è necessario inserire username e password:", background="white", font=('Helvetica', 10))
-        self.testo2.pack()
-        #area username
-        self.lblUser = tk.Label(self.frame11, text='Username', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblUser.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrUser = tk.Entry(self.frame11, font=('calibre', 10, 'normal'), state="disabled")
-        self.ntrUser.grid(row=0, column=1, padx=5, pady=5)
-        #area password
-        self.lblPsw = tk.Label(self.frame12, text='Password', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblPsw.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrPsw = tk.Entry(self.frame12, font=('calibre', 10, 'normal'), state="disabled", show="*")
-        self.ntrPsw.grid(row=0, column=1, padx=5, pady=5)
-        #-----------------------------------------------------------------------------------------------------------------
-        #AREA BOTTONI 
-        #-----------------------------------------------------------------------------------------------------------------
-        self.testo3 = tk.Label(self.frame14, text="Selezionare l'operazione che si desidera eseguire", background="white", font=('Helvetica', 10))
-        self.testo3.pack()
-        #BOTTONI INFO
-        self.btnLimite = tk.Button(self.frame19, text="Vedi limite", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnScoperto = tk.Button(self.frame20, text="Vedi scoperto", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnLimite.pack()
-        self.btnScoperto.pack()
-        #BOTTONI PRELIEVO - DEPOSITA - TRASFERISCI:
-        self.btnPrelievo = tk.Button(self.frame25, text="Prelievo", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnDeposito = tk.Button(self.frame29, text="Deposita", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnTransf = tk.Button(self.frame34, text="Trasferisci", background="light blue", width=20, padx=10, pady=10, state="disabled")
-        self.btnDeposito.pack()
-        self.btnPrelievo.pack()
-        self.btnTransf.pack()
-       
+        #VARIABILI LOGIN del cliente
+        self.user = tk.StringVar()
+        self.psw = tk.StringVar()
 
-        #RISULTATI DEI PRIMI DUE BOTTONI (LIMITE E SCOPERTO) - STAMPA:
+        #OPERAZIONI ESEGUIBILI DAL CLIENTE
+        self.info3 = tk.Label(self.frame4, text= "Scegliere una delle seguenti operazioni:", foreground="black", font=('Helvetica', 10), width=500)
+        self.btnLimite = tk.Button(self.frame4, text="Limite Prelievo", background="light blue", width=20, pady=5, state="disabled")
+        self.btnScoperto = tk.Button(self.frame4, text="Scoperto", background="light blue", width=20, pady=5, state="disabled")
+        self.btnPrelievo = tk.Button(self.frame4, text="Prelievo", background="light blue", width=20, pady=5, state="disabled")
+        self.btnDeposito = tk.Button(self.frame4, text="Deposita", background="light blue", width=20, pady=5, state="disabled")
+        self.btnTransf = tk.Button(self.frame4, text="Trasferisci cash", background="light blue", width=20, pady=5, state="disabled")
+        self.info3.pack(anchor= "center")
+        self.btnLimite.pack(anchor= "center")
+        self.btnScoperto.pack(anchor= "center")
+        self.btnPrelievo.pack(anchor= "center")
+        self.btnDeposito.pack(anchor= "center")
+        self.btnTransf.pack(anchor= "center")
+
+        #LIMITE E SCOPERTO
         self.limitevar = tk.StringVar()
-        self.lblLimite = tk.Label(self.frame16, font=('calibre',10, 'bold'), textvariable=self.limitevar)
+        self.lblLimite = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.limitevar, pady = 10, foreground="green")
         self.scopertovar = tk.StringVar()
-        self.lblScoperto = tk.Label(self.frame17, font=('calibre',10, 'bold'), textvariable=self.scopertovar)
-
+        self.lblScoperto = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.scopertovar, pady=10, foreground="green")
         #MOSTRA LIMITE E SCOPERTO
         self.lblLimite.pack_forget()
         self.lblScoperto.pack_forget()
 
-        #AREA PRELIEVO-DEPOSITA-TRASFERISCI:
-        #Label Prelievo:
-        self.testo4 = tk.Label(self.frame22, text="Inserire la quantità di denaro che si desidera prelevare:", background="white", font=('Helvetica', 10))
-        self.testo4.pack()
-        self.lblCifraPrelievo = tk.Label(self.frame23, text='Somma:', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblCifraPrelievo.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrCifraPrelievo = tk.Entry(self.frame23, font=('calibre', 10, 'normal'), state="disabled")
-        self.ntrCifraPrelievo.grid(row=0, column=1, padx=5, pady=5)
-        #Label Deposita
-        self.testo5 = tk.Label(self.frame26, text="Inserire la quantità di denaro che si desidera depositare:", background="white", font=('Helvetica', 10))
-        self.testo5.pack()
-        self.lblCifraDeposito = tk.Label(self.frame27, text='Somma:', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblCifraDeposito.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrCifraDeposito = tk.Entry(self.frame27, font=('calibre', 10, 'normal'), state="disabled")
-        self.ntrCifraDeposito.grid(row=0, column=1, padx=5, pady=5)
-
-        #Label Trasferisci
-        self.testo6 = tk.Label(self.frame30, text="Inserire la quantità di denaro che si vuole trasferire e destinatario:", background="white", font=('Helvetica', 10))
-        self.testo6.pack()
-
-        self.lblCifraTrasfSomma = tk.Label(self.frame31, text='Somma:', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblCifraTrasfSomma.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrCifraTrasfSomma = tk.Entry(self.frame31, font=('calibre', 10, 'normal'), state="disabled")
-        self.ntrCifraTrasfSomma.grid(row=0, column=1, padx=5, pady=5)
-        self.lblTrasfDest = tk.Label(self.frame32, text='Destinatario:', font=('calibre', 10, 'bold'), state="disabled")
-        self.lblTrasfDest.grid(row=0, column=0, padx=5, pady=5)
-        self.ntrTrasfDest = tk.Entry(self.frame32, font=('calibre', 10, 'normal'), state="disabled")
-        self.ntrTrasfDest.grid(row=0, column=1, padx=5, pady=5)
-
+        #PRELIEVO, TRASFERIMENTO, DEPOSITO
+        self.saldovar = tk.StringVar()
+        self.lblSaldo = tk.Label(self.frame4, font=('calibre',10, 'bold'), textvariable=self.saldovar, pady=10, foreground="green")
+        #prelievo
+        self.lblCifraPrelievo = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da prelevare")
+        self.ntrCifraPrelievo = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        self.btnConfermaPrelievo = tk.Button(self.frame4, text="Preleva", background="green", foreground="white", width=19, pady=10)
+        #trasferimento
+        self.lblCifraTransf = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da trasferire")
+        self.ntrCifraTransf = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        self.lblUserTransf = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire username destinatario")
+        self.ntrUserTransf = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        self.btnConfermaTransf = tk.Button(self.frame4, text="Invia denaro", background="green", foreground="white", width=19, pady=10)
+        self.btnConfermaTransf.pack(anchor="center")
+        #deposito
+        self.lblCifraDeposito = tk.Label(self.frame4, font=('calibre',10, 'bold'), text="Inserire somma da depositare")
+        self.ntrCifraDeposito = tk.Entry(self.frame4, font=('calibre',10, 'bold'))
+        self.btnConfermaDeposito = tk.Button(self.frame4, text="Deposita", background="green", foreground="white", width=19, pady=10)
+        self.btnConfermaDeposito.pack(anchor="center")
+        #LOGOUT
+        self.btnLogout = tk.Button(self.frame3, text="Esci", background="red", foreground="white", width=18, pady=10)
+        self.btnLogout.pack(anchor="center")
+        
         #PRELIEVO
-        #self.lblSaldo.pack_forget() <----------------- SU QUESTO DA ERRORE
+        self.lblSaldo.pack_forget()
         self.lblCifraPrelievo.pack_forget()
         self.ntrCifraPrelievo.pack_forget()
-
-        #DISCORSO SALDO
-        self.saldovar = tk.StringVar()
-        #self.lblSaldo = tk.Label(self.frameX, font=('calibre',10, 'bold'), textvariable=self.saldovar) <------- ANCHE QUI PERCHE' C'è DA DECIDERE UN FRAME
+        self.btnConfermaPrelievo.pack_forget()
+        #DEPOSITO
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+        #TRASFERIMENTO
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
+        #LOGOUT
+        self.btnLogout.pack_forget()
 
         #BINDING
         self.btnLoad.bind("<Button-1>", self.caricaDataset)
+        #login
+        self.btnLogin.bind("<Button-1>", self.login)
+        #mostralimite e scoperto
         self.btnLimite.bind("<Button-1>", self.mostraLimite)
         self.btnScoperto.bind("<Button-1>", self.mostraScoperto)
-        self.btnPrelievo.bind("<Button-1>", self.prelievo)
-        self.btnDeposito.bind("<Button-1>", self.deposita)
-        self.btnTransf.bind("<Button-1>", self.trasferisci)
+        #prelievo, deposito e trasferimento
+        self.btnPrelievo.bind("<Button-1>", self.attivaPrelievo)
+        self.btnDeposito.bind("<Button-1>", self.attivaDeposito)
+        self.btnTransf.bind("<Button-1>", self.attivaTransf)
+        #conferma
+        self.btnConfermaPrelievo.bind("<Button-1>", self.confermaPrelievo)
+        self.btnConfermaDeposito.bind("<Button-1>", self.confermaDeposito)
+        self.btnConfermaTransf.bind("<Button-1>", self.confermaTransf)
+        #Uscita
+        self.btnLogout.bind("<Button-1>", self.logout)
 
-        #VARIABILI DI CONTROLLO
-        self.load = False
-        self.check_login = False
+        #CREDITS
+        self.info5 = tk.Label(self.frame5, text="______________________________________\n\nMihnea Sever Molnar, 579590\n Irene Poli, 604855\n Programmazione e Analisi Dati - ModA, a.a. 2023-2024\n______________________________________", foreground="black", font=('calibre',10, 'bold'), width=500, height=20)
+        self.info5.pack()
 
-#------------------------------------------------------------------------------------------------------------------------------------------------
-#FUNZIONI:
-
-#1 FUNZIONE CHE CARICA IL DATASET
-#----------------------------------------------------------------------------------------------
+#FUNZIONI
+#____________________________________________________________________________________________________
+#1 CARICA DATASET:
     def caricaDataset(self, event):
         #Carica il file:
         filePath = filedialog.askopenfilename()
         filePath = filePath.strip() #elimina eventuali spazi bianchi a inizio e fine stringa
         indiceBarra = filePath.rfind("/") #restituisce l'ultimo indice di "/"
         filename = filePath[indiceBarra + 1:]
-        #print(filename)
-        indicePunto = filename.rfind(".") 
+        indicePunto = filename.rfind(".") #restituisce l'ultimo indice di "."
         estensione = filename[indicePunto + 1:]
+        #verifico che estensione sia txt e che quindi il file che sto caricando sia di tipo .txt
         if estensione == "txt":
+            self.filename = filename
             try:
             #carico il file in lettura e prendo solo User e Psw dell'ADMIN e filename 
                 with open(filename, "r") as file:
@@ -241,7 +184,9 @@ class BancomatApp():
                             user, psw = riga.split()[1:3]
                             self.userAdmin = user
                             self.pswAdmin = psw
+                            #oggetto istanza della classe bancomat, ricordiamo che bancomat richiede tre argomenti di cui il primo è l'oggetto ADMIN
                             self.bancomat = Bancomat(Admin(self.userAdmin, self.pswAdmin), 0, 0)
+                            #carica
                             if self.bancomat.carica_da_file(self.userAdmin, self.pswAdmin, filename):
                                 #Messaggio di buon fine
                                 messagebox.showinfo("Operazione riuscita", "File caricato con successo!")
@@ -251,25 +196,12 @@ class BancomatApp():
                                 self.ntrUser.config(state="normal")
                                 self.lblPsw.config(state="normal")
                                 self.ntrPsw.config(state="normal")
-
-                                #Abilita i button per le operazioni
-                                self.btnLimite.config(state="normal")
-                                self.btnScoperto.config(state="normal")
-                                self.btnDeposito.config(state="normal")
-                                self.btnPrelievo.config(state="normal")
-                                self.btnTransf.config(state="normal")
+                                self.btnLogin.config(state="normal")
 
                                 #Cosi prende in considerazione solo il primo admin che trova
                                 break
                             else:
                                 messagebox.showerror("Attenzione", "Errore nel caricamento del file " + filename) 
-
-                            #?????????
-                            self.btnLimite.config(state="normal")
-                            self.btnScoperto.config(state="normal")
-                            """self.btnDeposito.config(state="normal")
-                            self.btnPrelievo.config(state="normal")
-                            self.btnTransf.config(state="normal")"""
             except IOError:
                 messagebox.showerror("Attenzione", "Errore nel caricamento del file " + filename)
                 return False 
@@ -277,65 +209,289 @@ class BancomatApp():
         else:
             messagebox.showwarning("Attenzione", "Caricare il file in formato .txt")
             return False
+        
+    #2 LOGIN
+    #-------------------------------------------------------------------------------------------------------------
+    def login(self, event):
+            #prendo ciò che viene inserito nella entry ed elimino eventuali spazi
+            self.user = self.ntrUser.get().strip()
+            self.psw = self.ntrPsw.get().strip()
+            #Se il login va a buon fine
+            loggato = self.bancomat.login(self.user, self.psw)
+            if loggato:
+                messagebox.showinfo("Operazione riuscita", "Login effettuato! Adesso hai accesso alle operazioni del bancomat!")
+                #Attivazione dei bottoni per le operazioni
+                self.btnLimite.config(state="normal")
+                self.btnScoperto.config(state="normal")
+                self.btnDeposito.config(state="normal")
+                self.btnPrelievo.config(state="normal")
+                self.btnTransf.config(state="normal")
 
-    #2 - FUNZIONE CHE MOSTRA IL LIMITE DEL DENARO PRELEVABILE
-    #--------------------------------------------------------
+                #Disattivo il login - perchè al posto dei widget per effettuare il login appare il bottone "Esci"
+                self.btnLogout.pack(anchor="center")
+                self.btnLogin.pack_forget()
+                self.lblUser.pack_forget()
+                self.ntrUser.pack_forget()
+                self.lblPsw.pack_forget()
+                self.ntrPsw.pack_forget()
+            else:
+                messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
+
+#3 DISABILITA OPERAZIONI:
+#________________________________________________________________________________________________________________________
+    def disabilitaOperazioni(self):
+        #Azzero le variabili di login
+        self.user = tk.StringVar()
+        self.psw = tk.StringVar()
+
+        #Cancella i valori delle entry di Login
+        #Elimina tutto il contenuto della entry
+        self.ntrUser.delete(0, tk.END)
+        self.ntrPsw.delete(0, tk.END)
+        self.ntrCifraPrelievo.delete(0, tk.END)
+        self.ntrCifraDeposito.delete(0, tk.END)
+        self.ntrCifraTransf.delete(0, tk.END)
+        self.ntrUserTransf.delete(0, tk.END)
+        
+        #Disabilita i button
+        self.btnLimite.config(state="disabled")
+        self.btnScoperto.config(state="disabled")
+        self.btnDeposito.config(state="disabled")
+        self.btnPrelievo.config(state="disabled")
+        self.btnTransf.config(state="disabled")
+
+        #Mostra tutti i campi del login
+        self.lblUser.pack()
+        self.ntrUser.pack()
+        self.lblPsw.pack()
+        self.ntrPsw.pack()
+        self.btnLogin.pack()
+
+        #Nasconde tutti gli altri widget
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblSaldo.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
+        self.btnConfermaPrelievo.pack_forget()
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
+        #Nasconde il button di logout
+        self.btnLogout.pack_forget()
+
+#4 MOSTRA LIMITE E SCOPERTO
+#________________________________________________________________________________________________________________________
     def mostraLimite(self, event):
         #Attivazione dei campi per effettuare il login
-        user = self.ntrUser.get().strip()
-        psw = self.ntrPsw.get().strip()
-        if self.bancomat.get_limite_prelievo(user, psw):
+        if self.bancomat.get_limite_prelievo(self.user, self.psw):
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti 
+            self.lblScoperto.pack_forget()
+            self.lblSaldo.pack_forget()
+            self.lblCifraPrelievo.pack_forget()
+            self.ntrCifraPrelievo.pack_forget()
+            self.btnConfermaPrelievo.pack_forget()
+            #Aggiungere qui sotto quelli ancora da creare
+
+            #Rendo visibile solo quello che mostra il limite di prelievo
             self.lblLimite.pack(side = tk.TOP)
-            self.limitevar.set("Limite prelievo = " + str(self.bancomat.get_limite_prelievo(user, psw)))
+            self.limitevar.set("Limite prelievo = " + str(self.bancomat.get_limite_prelievo(self.user, self.psw)))
         else:
-            messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
 
-    #3 - FUNZIONE CHE MOSTRA LO SCOPERTO MASSIMO
-    #------------------------------------------------------
     def mostraScoperto(self, event):
-        user = self.ntrUser.get().strip()
-        psw = self.ntrPsw.get().strip()
-        if self.bancomat.get_scoperto_massimo(user, psw):
-            self.lblScoperto.pack(side = tk.TOP)
-            self.scopertovar.set("Lo scoperto massimo è: " + str(self.bancomat.get_scoperto_massimo(user, psw)))
-        else:
-            messagebox.showerror("Attenzione", "Credenziali errate, controlla se sono giuste e riprova")
+        if self.bancomat.get_scoperto_massimo(self.user, self.psw):
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+            self.lblLimite.pack_forget()
+            self.lblSaldo.pack_forget()
+            self.lblCifraPrelievo.pack_forget()
+            self.ntrCifraPrelievo.pack_forget()
+            self.btnConfermaPrelievo.pack_forget()
+            #Aggiungere qui sotto quelli ancora da creare
 
-   
-    def prelievo(self, event):
-        user = self.ntrUser.get().strip()
-        psw = self.ntrPsw.get().strip()
-        somma = self.ntrCifraPrelievo.get().strip()
-        if self.bancomat.preleva(user, psw, somma):
-            messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
+            #Rendo visibile solo quello che mostra lo scoperto
+            self.lblScoperto.pack(side = tk.TOP)
+            self.scopertovar.set("Lo scoperto massimo è: " + str(self.bancomat.get_scoperto_massimo(self.user, self.psw)))
         else:
-            messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla le credenziali e riprova.")
+
+#5 PRIELIEVO:
+#________________________________________________________________________________________________________________________
+
+    def attivaPrelievo(self, event):
+        #Rendo visibilo i campi per fare il prelievo e mi ricavo il saldo
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
+        else:
+            self.lblSaldo.pack(side = tk.TOP)
+            self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+            self.lblCifraPrelievo.pack(side = tk.TOP)
+            self.ntrCifraPrelievo.pack(side = tk.TOP)
+            self.btnConfermaPrelievo.pack(side = tk.TOP)
+
         
+        #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
+       
+    def confermaPrelievo(self, event):
+        #mi ricavo la quantità di denaro dalla entry
+        somma = self.ntrCifraPrelievo.get()
+        if somma.strip().isdigit(): #la stringa deve essere composta da soli numeri
+            somma = int(somma)
+            #conferma dell'operazione
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?") #booleano
+            if risposta:
+                #ho due variabili perchè la funzione preleva ha due return! (Ture, "") in caso positivo o (False, messaggio) in caso negativo. 
+                esito, msg = self.bancomat.preleva(self.user, self.psw, somma)
+                if esito:
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()
+                    self.lblCifraPrelievo.pack_forget()
+                    self.ntrCifraPrelievo.pack_forget()
+                    self.btnConfermaPrelievo.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
+                else:
+                    messagebox.showwarning("Attenzione", msg)
+        else:
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e riprova.")
     
-    def trasferisci(self, event):
-        self.attivazioneLogin(event)
-        if self.check_login:
-            user = self.ntrUser.get().strip()
-            psw = self.ntrPsw.get().strip()
-            if self.bancomat.preleva(user, psw):
-                messagebox.showinfo("Operazione riuscita", "Denaro prelevato con successo!")
-            else:
-                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+#6 TRASFERIMENTO:
+#________________________________________________________________________________________________________________________
+
+    def attivaTransf(self, event):
+        #mi ricavo il saldo
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
         else:
-            messagebox.showerror("Attenzione", "Effettuare il login")
-   
-    def deposita(self, event): 
-        self.attivazioneLogin(event)   
-        if self.check_login:
-            user = self.ntrUser.get().strip()
-            psw = self.ntrPsw.get().strip()
-            if self.bancomat.deposita(user, psw):
-                messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!")
-            else:
-                messagebox.showwarning("Attenzione", "Operazione di prelievo non riuscita!")
+            #mostro a schermo le seguenti cose:
+            self.lblSaldo.pack(side = tk.TOP)
+            self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+            if self.bancomat.get_saldo(self.user, self.psw):
+                self.lblSaldo.pack(side = tk.TOP)
+                self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+            self.lblCifraTransf.pack(side = tk.TOP)
+            self.ntrCifraTransf.pack(side = tk.TOP)
+            self.lblUserTransf.pack(side = tk.TOP)
+            self.ntrUserTransf.pack(side = tk.TOP)
+            self.btnConfermaTransf.pack(side = tk.TOP)
+
+        #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblCifraDeposito.pack_forget()
+        self.ntrCifraDeposito.pack_forget()
+        self.btnConfermaDeposito.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
+        self.btnConfermaPrelievo.pack_forget()
+       
+    def confermaTransf(self, event):
+        #dati che mi ricavo dalle entry 
+        somma = self.ntrCifraTransf.get()
+        dest = self.ntrUserTransf.get()
+        if somma.strip().isdigit():
+            somma = int(somma)
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
+            if risposta:
+                #anche qui l'output della funzione trasferisci returna due elementi
+                esito, msg = self.bancomat.trasferisci(self.user, self.psw, dest, somma)
+                if esito:
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro trasferito sul conto di " + dest +"\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()                    
+                    self.lblCifraTransf.pack_forget()
+                    self.ntrCifraTransf.pack_forget()
+                    self.lblUserTransf.pack_forget()
+                    self.ntrUserTransf.pack_forget()
+                    self.btnConfermaTransf.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
+                else:
+                    messagebox.showwarning("Attenzione", msg)
         else:
-            messagebox.showerror("Attenzione", "Effettuare il login")
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e lo username del destinatario e riprova.")
+#7 DEPOSITO:
+#________________________________________________________________________________________________________________________
+
+    def attivaDeposito(self, event):
+        #mi ricavo il saldo
+        risultato = self.bancomat.get_saldo(self.user, self.psw)
+        if risultato == "Utente non valido":
+            messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
+        else:
+            #mostro a schermo:
+            self.lblSaldo.pack(side = tk.TOP)
+            self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
+            self.lblCifraDeposito.pack(side = tk.TOP)
+            self.ntrCifraDeposito.pack(side = tk.TOP)
+            self.btnConfermaDeposito.pack(side = tk.TOP)
+
+        #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti
+        self.lblLimite.pack_forget()
+        self.lblScoperto.pack_forget()
+        self.lblCifraPrelievo.pack_forget()
+        self.ntrCifraPrelievo.pack_forget()
+        self.btnConfermaPrelievo.pack_forget()
+        self.lblCifraTransf.pack_forget()
+        self.ntrCifraTransf.pack_forget()
+        self.lblUserTransf.pack_forget()
+        self.ntrUserTransf.pack_forget()
+        self.btnConfermaTransf.pack_forget()
+      
    
+    def confermaDeposito(self, event): 
+        #mi ricavo dalla entry la quantità di denaro da depositare
+        somma = self.ntrCifraDeposito.get()
+        if somma.strip().isdigit():
+            somma = int(self.ntrCifraDeposito.get())
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
+            if risposta:
+                #deposita returna due elementi
+                esito, msg = self.bancomat.deposita(self.user, self.psw, somma)
+                if esito:
+                    self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
+                    self.root.after(250, 
+                                    lambda: messagebox.showinfo("Operazione riuscita", "Denaro depositato con successo!\nPer svolgere altre operazioni effettuare il login di nuovo."))
+                    #Nascondo i widget dell'operazione in corso
+                    self.lblSaldo.pack_forget()
+                    self.lblCifraDeposito.pack_forget()
+                    self.ntrCifraDeposito.pack_forget()
+                    self.btnConfermaDeposito.pack_forget()
+                    #Richiamo la funzione che cancella i valori nel login e disabilita i button
+                    self.disabilitaOperazioni()
+                else:
+                    messagebox.showwarning("Attenzione", msg)
+        else:
+            messagebox.showerror("Errore", "Ops, qualcosa è andato storto. Controlla la cifra inserita e riprova.")
+
+
+
+    def logout(self, event):
+        #Disabilita le operazioni
+        self.disabilitaOperazioni()
+
 
 window = tk.Tk()
 BancomatApp(window)
