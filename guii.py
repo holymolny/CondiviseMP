@@ -1,10 +1,13 @@
 from bancomat import *
 from utenti import *
 import tkinter as tk
+#mi serve per generare i messaggi
 from tkinter import messagebox
+#mi serve per caricare file dal pc 
 from tkinter import filedialog
 
 class BancomatApp():
+    #Costruttore
     def __init__(self, root):
         self.root = root
         self.root.title("Bancomat Molpol")
@@ -150,9 +153,9 @@ class BancomatApp():
         filePath = filePath.strip() #elimina eventuali spazi bianchi a inizio e fine stringa
         indiceBarra = filePath.rfind("/") #restituisce l'ultimo indice di "/"
         filename = filePath[indiceBarra + 1:]
-        #print(filename)
-        indicePunto = filename.rfind(".") 
+        indicePunto = filename.rfind(".") #restituisce l'ultimo indice di "."
         estensione = filename[indicePunto + 1:]
+        #verifico che estensione sia txt e che quindi il file che sto caricando sia di tipo .txt
         if estensione == "txt":
             self.filename = filename
             try:
@@ -193,6 +196,7 @@ class BancomatApp():
     #2 LOGIN
     #-------------------------------------------------------------------------------------------------------------
     def login(self, event):
+            #prendo ciò che viene inserito nella entry ed elimino eventuali spazi
             self.user = self.ntrUser.get().strip()
             self.psw = self.ntrPsw.get().strip()
             #Se il login va a buon fine
@@ -206,7 +210,7 @@ class BancomatApp():
                 self.btnPrelievo.config(state="normal")
                 self.btnTransf.config(state="normal")
 
-                #Disattivo il login
+                #Disattivo il login - perchè al posto dei widget per effettuare il login appare il bottone "Esci"
                 self.btnLogout.pack(anchor="center")
                 self.btnLogin.pack_forget()
                 self.lblUser.pack_forget()
@@ -227,7 +231,11 @@ class BancomatApp():
         #Elimina tutto il contenuto della entry
         self.ntrUser.delete(0, tk.END)
         self.ntrPsw.delete(0, tk.END)
-
+        self.ntrCifraPrelievo.delete(0, tk.END)
+        self.ntrCifraDeposito.delete(0, tk.END)
+        self.ntrCifraTransf.delete(0, tk.END)
+        self.ntrUserTransf.delete(0, tk.END)
+        
         #Disabilita i button
         self.btnLimite.config(state="disabled")
         self.btnScoperto.config(state="disabled")
@@ -265,7 +273,7 @@ class BancomatApp():
     def mostraLimite(self, event):
         #Attivazione dei campi per effettuare il login
         if self.bancomat.get_limite_prelievo(self.user, self.psw):
-            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti ---------- ??????????????
+            #Rendo invisibili gli altri widget che eventualmente potrebbero essere aperti 
             self.lblScoperto.pack_forget()
             self.lblSaldo.pack_forget()
             self.lblCifraPrelievo.pack_forget()
@@ -299,14 +307,13 @@ class BancomatApp():
 #________________________________________________________________________________________________________________________
 
     def attivaPrelievo(self, event):
-        #Rendo visibile i campi per fare il prelievo
+        #Rendo visibilo i campi per fare il prelievo e mi ricavo il saldo
         risultato = self.bancomat.get_saldo(self.user, self.psw)
         if risultato == "Utente non valido":
             messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
         else:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
-            
             self.lblCifraPrelievo.pack(side = tk.TOP)
             self.ntrCifraPrelievo.pack(side = tk.TOP)
             self.btnConfermaPrelievo.pack(side = tk.TOP)
@@ -323,15 +330,16 @@ class BancomatApp():
         self.lblUserTransf.pack_forget()
         self.ntrUserTransf.pack_forget()
         self.btnConfermaTransf.pack_forget()
-        #Aggiungere qui sotto quelli ancora da creare
-
-
+       
     def confermaPrelievo(self, event):
+        #mi ricavo la quantità di denaro dalla entry
         somma = self.ntrCifraPrelievo.get()
-        if somma.strip().isdigit():
+        if somma.strip().isdigit(): #la stringa deve essere composta da soli numeri
             somma = int(somma)
-            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
+            #conferma dell'operazione
+            risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?") #booleano
             if risposta:
+                #ho due variabili perchè la funzione preleva ha due return! (Ture, "") in caso positivo o (False, messaggio) in caso negativo. 
                 esito, msg = self.bancomat.preleva(self.user, self.psw, somma)
                 if esito:
                     self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
@@ -353,10 +361,12 @@ class BancomatApp():
 #________________________________________________________________________________________________________________________
 
     def attivaTransf(self, event):
+        #mi ricavo il saldo
         risultato = self.bancomat.get_saldo(self.user, self.psw)
         if risultato == "Utente non valido":
             messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
         else:
+            #mostro a schermo le seguenti cose:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
             if self.bancomat.get_saldo(self.user, self.psw):
@@ -377,15 +387,16 @@ class BancomatApp():
         self.lblCifraPrelievo.pack_forget()
         self.ntrCifraPrelievo.pack_forget()
         self.btnConfermaPrelievo.pack_forget()
-        #Aggiungere qui sotto quelli ancora da creare
-
+       
     def confermaTransf(self, event):
+        #dati che mi ricavo dalle entry 
         somma = self.ntrCifraTransf.get()
         dest = self.ntrUserTransf.get()
         if somma.strip().isdigit():
             somma = int(somma)
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
+                #anche qui l'output della funzione trasferisci returna due elementi
                 esito, msg = self.bancomat.trasferisci(self.user, self.psw, dest, somma)
                 if esito:
                     self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
@@ -408,10 +419,12 @@ class BancomatApp():
 #________________________________________________________________________________________________________________________
 
     def attivaDeposito(self, event):
+        #mi ricavo il saldo
         risultato = self.bancomat.get_saldo(self.user, self.psw)
         if risultato == "Utente non valido":
             messagebox.showerror("Errore", risultato + "\nNon sei abilitato per completare questa operazione.")
         else:
+            #mostro a schermo:
             self.lblSaldo.pack(side = tk.TOP)
             self.saldovar.set("Saldo disponibile: " + str(self.bancomat.get_saldo(self.user, self.psw)))
             self.lblCifraDeposito.pack(side = tk.TOP)
@@ -429,14 +442,16 @@ class BancomatApp():
         self.lblUserTransf.pack_forget()
         self.ntrUserTransf.pack_forget()
         self.btnConfermaTransf.pack_forget()
-        #Aggiungere qui sotto quelli ancora da creare
+      
    
     def confermaDeposito(self, event): 
+        #mi ricavo dalla entry la quantità di denaro da depositare
         somma = self.ntrCifraDeposito.get()
         if somma.strip().isdigit():
             somma = int(self.ntrCifraDeposito.get())
             risposta = messagebox.askquestion("Conferma", "Vuoi procedere con l'operazione?")
             if risposta:
+                #deposita returna due elementi
                 esito, msg = self.bancomat.deposita(self.user, self.psw, somma)
                 if esito:
                     self.bancomat.salva_su_file(self.userAdmin, self.pswAdmin, self.filename)
@@ -459,9 +474,6 @@ class BancomatApp():
     def logout(self, event):
         #Disabilita le operazioni
         self.disabilitaOperazioni()
-
-        
-
 
 
 window = tk.Tk()

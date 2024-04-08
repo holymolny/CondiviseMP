@@ -21,8 +21,9 @@ class Bancomat:
         Prende come argomenti un Admin, un intero positivo rappresentante lo scoperto massimo e un intero positivo rappresentante il limite di prelievo.
         Controlla tipi e valori degli argomenti e solleva un'eccezione TypeError o ValueError se non sono corretti.
         Inizializza l'oggetto Bancomat inserendo l'admin nel dizionario utenti.
-
     """
+
+    #Costruttore
     def __init__(self, initAdmin, initScoperto, initPrelievo):
         #initAdmin deve essere oggetto classe Admin
         if not isinstance(initAdmin, Admin):
